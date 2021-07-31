@@ -9,10 +9,8 @@ import HealthKit
 import Suite
 
 public class WatchWorkoutManager: ObservableObject {
-	public let instance = WatchWorkoutManager()
+	public static let instance = WatchWorkoutManager()
 
 	public var currentWorkout: WatchWorkout? { willSet { objectWillChange.send() }}
-	public func createWorkout(using workoutConfiguration: HKWorkoutConfiguration) {
-		
-	}
+
 }

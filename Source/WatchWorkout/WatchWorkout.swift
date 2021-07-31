@@ -9,22 +9,36 @@ import Suite
 import HealthKit
 
 public class WatchWorkout: NSObject, ObservableObject {
-	@Published public var phase = Phase.idle
+	@Published public internal(set) var phase = Phase.idle
 	@Published public var startedAt: Date?
-	
-	private let healthStore = HKHealthStore()
-	private var builder: HKLiveWorkoutBuilder?
-	private var session: HKWorkoutSession?
+	@Published public var endedAt: Date?
+	@Published public var errors: [Error] = []
+
+	public var workout: HKWorkout?
+
+	let healthStore = HKHealthStore()
+	var builder: HKLiveWorkoutBuilder?
+	var session: HKWorkoutSession?
 
 	var configuration: HKWorkoutConfiguration
 	
-	init(configuration config: HKWorkoutConfiguration?) {
+	public init(activity: HKWorkoutActivityType, location: HKWorkoutSessionLocationType = .outdoor) {
+		configuration = HKWorkoutConfiguration(activity: activity, location: location)
+		super.init()
+	}
+	
+	public init(configuration config: HKWorkoutConfiguration?) {
 		configuration = config ?? .defaultConfiguration
 		super.init()
 	}
 	
 	public func start(at date: Date = Date(), completion: @escaping (Error?) -> Void) {
-		if phase.isIdle {
+		if WatchWorkoutManager.instance.currentWorkout != nil, WatchWorkoutManager.instance.currentWorkout != self {
+			completion(WorkoutError.otherWorkoutInProgress)
+			return
+		}
+		
+		if !phase.isIdle {
 			completion(WorkoutError.workoutAlreadyStarted)
 			return
 		}
@@ -67,8 +81,13 @@ public class WatchWorkout: NSObject, ObservableObject {
 			return
 		}
 		
+		phase = .ending
+		endedAt = date
 		session.stopActivity(with: date)
 		session.end()
 	}
 }
 
+public extension WatchWorkout {
+	static var sample = WatchWorkout(activity: .rugby)
+}

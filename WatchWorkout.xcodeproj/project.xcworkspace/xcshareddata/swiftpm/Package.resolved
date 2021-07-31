@@ -2,12 +2,12 @@
   "object": {
     "pins": [
       {
-        "package": "Portal",
-        "repositoryURL": "https://github.com/bengottlieb/portal",
+        "package": "Suite",
+        "repositoryURL": "https://github.com/bengottlieb/suite",
         "state": {
           "branch": null,
-          "revision": "de7038423f00e034c478db044732c1289d577a53",
-          "version": "0.0.27"
+          "revision": "824a089b790a5704509752e1f7336125a9960002",
+          "version": "0.10.84"
         }
       }
     ]

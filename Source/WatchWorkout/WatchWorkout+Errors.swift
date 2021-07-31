@@ -9,6 +9,7 @@ import Foundation
 
 extension WatchWorkout {
 	public enum WorkoutError: String, LocalizedError {
+		case otherWorkoutInProgress
 		case workoutAlreadyStarted
 		case failedToCreateBuilder
 	}
