@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Portal",
+        "repositoryURL": "https://github.com/bengottlieb/portal",
+        "state": {
+          "branch": null,
+          "revision": "de7038423f00e034c478db044732c1289d577a53",
+          "version": "0.0.27"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
