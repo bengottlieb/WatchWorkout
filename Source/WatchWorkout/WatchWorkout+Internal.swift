@@ -35,8 +35,34 @@ extension WatchWorkout {
 	
 	func cleanup() {
 		phase = .idle
+		if isDeleted {
+			self.deleteFromHealthKit(completion: didFinishDeletingCompletion)
+		} else {
+			self.phase = .ended
+		}
+		
 		if WatchWorkoutManager.instance.currentWorkout == self {
 			WatchWorkoutManager.instance.currentWorkout = nil
 		}
+	}
+	
+	func deleteFromHealthKit(completion: ((Error?) -> Void)?) {
+		if let workout = self.workout {
+			healthStore.delete([workout]) { success, deleteError in
+				DispatchQueue.main.async {
+					if success {
+						self.phase = .deleted
+					} else {
+						self.phase = .failed(deleteError ?? WorkoutError.unableToDelete)
+					}
+					completion?(deleteError)
+				}
+			}
+		} else {
+			self.phase = .failed(WorkoutError.unableToDeleteDueToMissingWorkout)
+			completion?(WorkoutError.unableToDeleteDueToMissingWorkout)
+		}
+		
+		didFinishDeletingCompletion = nil
 	}
 }

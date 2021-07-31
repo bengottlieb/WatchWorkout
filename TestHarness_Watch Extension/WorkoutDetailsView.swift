@@ -22,7 +22,15 @@ struct WorkoutDetailsView: View {
 				
 			case .active:
 				Button("End") { workout.end() }
+				Button("Delete") { workout.delete() { err in
+					if let error = err { print("Error deleting a workout: \(error)")}
+				}}
 				
+			case .ended:
+				Button("Delete") { workout.delete() { err in
+					if let error = err { print("Error deleting a workout: \(error)")}
+				}}
+
 			default:
 				Text("processing…")
 			}

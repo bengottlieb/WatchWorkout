@@ -8,10 +8,24 @@
 import Foundation
 
 extension WatchWorkout {
-	public enum Phase: Equatable { case idle, loading, active, ending, finishing, failed(Error)
+	public enum Phase: Equatable { case idle, loading, active, ending, finishing, ended, deleted, failed(Error)
 		var isIdle: Bool {
 			switch self {
 			case .idle, .failed: return true
+			default: return false
+			}
+		}
+		
+		var isRunning: Bool {
+			switch self {
+			case .active, .loading: return true
+			default: return false
+			}
+		}
+		
+		var isEnding: Bool {
+			switch self {
+			case .ending, .finishing, .failed: return true
 			default: return false
 			}
 		}
@@ -23,6 +37,8 @@ extension WatchWorkout {
 			case (.active, .active): return true
 			case (.ending, .ending): return true
 			case (.finishing, .finishing): return true
+			case (.ended, .ended): return true
+			case (.deleted, .deleted): return true
 			default: return false
 			}
 		}
@@ -34,7 +50,9 @@ extension WatchWorkout {
 			case .active: return "active"
 			case .ending: return "ending"
 			case .finishing: return "finishing"
-			case .failed(let err): return "Failed: \(err)"
+			case .ended: return "ended"
+			case .deleted: return "deleted"
+			case .failed(let err): return "Failed: \(err.localizedDescription)"
 			}
 		}
 	}

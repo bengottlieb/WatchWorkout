@@ -13,12 +13,17 @@ public class WatchWorkout: NSObject, ObservableObject {
 	@Published public var startedAt: Date?
 	@Published public var endedAt: Date?
 	@Published public var errors: [Error] = []
+	public internal(set) var isDeleted = false
+	
+	
 
 	public var workout: HKWorkout?
 
 	let healthStore = HKHealthStore()
 	var builder: HKLiveWorkoutBuilder?
 	var session: HKWorkoutSession?
+	
+	var didFinishDeletingCompletion: ((Error?) -> Void)?
 
 	var configuration: HKWorkoutConfiguration
 	
@@ -73,6 +78,27 @@ public class WatchWorkout: NSObject, ObservableObject {
 		} catch {
 			completion(error)
 		}
+	}
+	
+	public func delete(completion: @escaping (Error?) -> Void) {
+		if isDeleted {
+			completion(nil)
+			return
+		}
+		
+		if phase == .ended {
+			deleteFromHealthKit(completion: completion)
+			return
+		}
+
+		guard phase.isRunning else {
+			completion(WorkoutError.notRunning)
+			return
+		}
+		
+		didFinishDeletingCompletion = completion
+		isDeleted = true
+		end()
 	}
 	
 	public func end(at date: Date = Date()) {
