@@ -42,7 +42,7 @@ extension WatchWorkout {
 		}
 	}
 	
-	func deleteFromHealthKit(completion: ((Error?) -> Void)?) {
+	func deleteFromHealthKit(completion: ErrorCallback?) {
 		if let workout = self.workout {
 			healthStore.delete([workout]) { success, deleteError in
 				DispatchQueue.main.async {

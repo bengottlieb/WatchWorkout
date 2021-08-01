@@ -12,6 +12,9 @@ extension WatchWorkout {
 		case otherWorkoutInProgress
 		case workoutAlreadyStarted
 		case failedToCreateBuilder
+		case noBuilderAvailable
+		case failedToAddSamples
+		case failedToFetchTypes
 		case notRunning
 		case unableToDelete
 		case unableToDeleteDueToMissingWorkout

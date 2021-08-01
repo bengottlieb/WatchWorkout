@@ -14,7 +14,7 @@ public class WatchWorkout: NSObject, ObservableObject {
 	@Published public var endedAt: Date?
 	@Published public var errors: [Error] = []
 	public internal(set) var isDeleted = false
-	
+	public var hasStarted: Bool { startedAt != nil }
 	
 
 	public var workout: HKWorkout?
@@ -23,7 +23,7 @@ public class WatchWorkout: NSObject, ObservableObject {
 	var builder: HKLiveWorkoutBuilder?
 	var session: HKWorkoutSession?
 	
-	var didFinishDeletingCompletion: ((Error?) -> Void)?
+	var didFinishDeletingCompletion: ErrorCallback?
 
 	var configuration: HKWorkoutConfiguration
 	
@@ -37,7 +37,7 @@ public class WatchWorkout: NSObject, ObservableObject {
 		super.init()
 	}
 	
-	public func start(at date: Date = Date(), completion: @escaping (Error?) -> Void) {
+	public func start(at date: Date = Date(), completion: @escaping ErrorCallback) {
 		if WatchWorkoutManager.instance.currentWorkout?.phase.isRunning == true {
 			completion(WorkoutError.otherWorkoutInProgress)
 			return
@@ -92,7 +92,7 @@ public class WatchWorkout: NSObject, ObservableObject {
 		session.end()
 	}
 
-	public func delete(completion: @escaping (Error?) -> Void) {
+	public func delete(completion: @escaping ErrorCallback) {
 		if isDeleted {
 			completion(nil)
 			return
