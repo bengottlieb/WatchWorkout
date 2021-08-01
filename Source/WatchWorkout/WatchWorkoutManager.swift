@@ -1,6 +1,5 @@
 //
 //  WatchWorkoutManager.swift
-//  WatchWorkout
 //
 //  Created by Ben Gottlieb on 7/31/21.
 //

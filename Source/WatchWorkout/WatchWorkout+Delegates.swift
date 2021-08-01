@@ -1,6 +1,5 @@
 //
 //  WatchWorkout+Delegates.swift
-//  TestHarness_Watch Extension
 //
 //  Created by Ben Gottlieb on 7/31/21.
 //
@@ -11,7 +10,11 @@ import Suite
 
 extension WatchWorkout: HKLiveWorkoutBuilderDelegate {
 	public func workoutBuilder(_ workoutBuilder: HKLiveWorkoutBuilder, didCollectDataOf collectedTypes: Set<HKSampleType>) {
-		
+		if let statistics = workoutBuilder.statistics(for: HeartRateMonitor.heartRateType) {
+			if let value = statistics.mostRecentQuantity()?.doubleValue(for: HeartRateMonitor.heartRateUnit) {
+				HeartRateMonitor.instance.set(heartRate: value)
+			}
+		}
 	}
 	
 	public func workoutBuilderDidCollectEvent(_ workoutBuilder: HKLiveWorkoutBuilder) {
