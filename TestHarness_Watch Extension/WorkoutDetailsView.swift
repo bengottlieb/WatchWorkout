@@ -30,6 +30,9 @@ struct WorkoutDetailsView: View {
 				Button("Delete") { workout.delete() { err in
 					if let error = err { print("Error deleting a workout: \(error)")}
 				}}
+				
+			case .deleted:
+				EmptyView()
 
 			default:
 				Text("processing…")

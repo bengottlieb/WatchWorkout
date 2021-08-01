@@ -16,20 +16,27 @@ extension WatchWorkout {
 			}
 		}
 		
-		var isRunning: Bool {
+		public var isRunning: Bool {
 			switch self {
 			case .active, .loading: return true
 			default: return false
 			}
 		}
 		
-		var isEnding: Bool {
+		public var isEnding: Bool {
 			switch self {
-			case .ending, .finishing, .failed: return true
+			case .ending, .finishing, .failed, .ended, .deleted: return true
 			default: return false
 			}
 		}
-		
+
+		public var hasEnded: Bool {
+			switch self {
+			case .failed, .ended, .deleted: return true
+			default: return false
+			}
+		}
+
 		public static func ==(lhs: Phase, rhs: Phase) -> Bool {
 			switch (lhs, rhs) {
 			case (.idle, .idle): return true

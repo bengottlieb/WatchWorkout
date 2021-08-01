@@ -38,7 +38,7 @@ public class WatchWorkout: NSObject, ObservableObject {
 	}
 	
 	public func start(at date: Date = Date(), completion: @escaping (Error?) -> Void) {
-		if WatchWorkoutManager.instance.currentWorkout != nil, WatchWorkoutManager.instance.currentWorkout != self {
+		if WatchWorkoutManager.instance.currentWorkout?.phase.isRunning == true {
 			completion(WorkoutError.otherWorkoutInProgress)
 			return
 		}
@@ -80,6 +80,18 @@ public class WatchWorkout: NSObject, ObservableObject {
 		}
 	}
 	
+	public func end(at date: Date = Date()) {
+		guard phase == .active, let session = self.session else {
+			phase = phase == .active ? .idle : phase
+			return
+		}
+		
+		phase = .ending
+		endedAt = date
+		session.stopActivity(with: date)
+		session.end()
+	}
+
 	public func delete(completion: @escaping (Error?) -> Void) {
 		if isDeleted {
 			completion(nil)
@@ -99,18 +111,6 @@ public class WatchWorkout: NSObject, ObservableObject {
 		didFinishDeletingCompletion = completion
 		isDeleted = true
 		end()
-	}
-	
-	public func end(at date: Date = Date()) {
-		guard phase == .active, let session = self.session else {
-			phase = phase == .active ? .idle : phase
-			return
-		}
-		
-		phase = .ending
-		endedAt = date
-		session.stopActivity(with: date)
-		session.end()
 	}
 }
 

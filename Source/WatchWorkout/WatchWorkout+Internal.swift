@@ -40,10 +40,6 @@ extension WatchWorkout {
 		} else {
 			self.phase = .ended
 		}
-		
-		if WatchWorkoutManager.instance.currentWorkout == self {
-			WatchWorkoutManager.instance.currentWorkout = nil
-		}
 	}
 	
 	func deleteFromHealthKit(completion: ((Error?) -> Void)?) {

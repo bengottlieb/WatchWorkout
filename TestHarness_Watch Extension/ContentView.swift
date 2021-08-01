@@ -13,10 +13,17 @@ struct ContentView: View {
 	var body: some View {
 		if let current = manager.currentWorkout {
 			WorkoutDetailsView(workout: current)
-		} else {
-			Button("Create Workout") {
-				manager.currentWorkout = WatchWorkout(activity: .cricket)
+			if current.phase.hasEnded {
+				createWorkoutButton
 			}
+		} else {
+			createWorkoutButton
+		}
+	}
+	
+	var createWorkoutButton: some View {
+		Button("Create Workout") {
+			manager.currentWorkout = WatchWorkout(activity: .cricket)
 		}
 	}
 }
