@@ -9,7 +9,8 @@ import SwiftUI
 
 struct ContentView: View {
 	@ObservedObject var manager = WatchWorkoutManager.instance
-	
+	@Environment(\.scenePhase) var scenePhase
+
 	var body: some View {
 		VStack() {
 			HeartRateLabel()
@@ -20,6 +21,22 @@ struct ContentView: View {
 				}
 			} else {
 				createWorkoutButton
+			}
+		}
+		.onChange(of: scenePhase) { phase in
+			print("Scene Phase: \(phase)")
+			switch phase {
+			case .active:
+				WKInterfaceDevice.current().play(.success)
+				
+			case .background:
+				WKInterfaceDevice.current().play(.failure)
+				
+			case .inactive:
+				WKInterfaceDevice.current().play(.retry)
+				
+			default:
+				break
 			}
 		}
 	}

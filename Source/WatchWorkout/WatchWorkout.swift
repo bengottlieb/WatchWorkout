@@ -36,6 +36,17 @@ public class WatchWorkout: NSObject, ObservableObject {
 		super.init()
 	}
 	
+	init(session restoredSession: HKWorkoutSession) {
+		configuration = restoredSession.workoutConfiguration
+		super.init()
+		
+		session = restoredSession
+	}
+
+	func restore(completion: @escaping ErrorCallback) {
+		start(at: session?.startDate ?? Date(), completion: completion)
+	}
+	
 	public func start(at date: Date = Date(), completion: @escaping ErrorCallback) {
 		if WatchWorkoutManager.instance.currentWorkout?.phase.isRunning == true {
 			completion(WorkoutError.otherWorkoutInProgress)
@@ -49,7 +60,7 @@ public class WatchWorkout: NSObject, ObservableObject {
 
 		do {
 			phase = .loading
-			session = try HKWorkoutSession(healthStore: healthStore, configuration: configuration)
+			if session == nil { session = try HKWorkoutSession(healthStore: healthStore, configuration: configuration) }
 			builder = session?.associatedWorkoutBuilder()
 			session?.delegate = self
 

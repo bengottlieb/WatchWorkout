@@ -10,6 +10,26 @@ import Suite
 public class WatchWorkoutManager: ObservableObject {
 	public static let instance = WatchWorkoutManager()
 
-	public var currentWorkout: WatchWorkout? { willSet { objectWillChange.send() }}
+	@Published public var currentWorkout: WatchWorkout?
+	public var store = HKHealthStore()
+	
+	public func recoverActiveWorkout(completion: ErrorCallback? = nil) {
+		store.recoverActiveWorkoutSession { session, error in
+			if let session = session {
+				DispatchQueue.main.async {
+					self.currentWorkout = WatchWorkout(session: session)
+					self.currentWorkout?.restore { error in
+						if let err = error {
+							self.currentWorkout = nil
+							logg(error: err, "Failed to restore a workout from \(session).")
+						}
+						completion?(error)
+					}
+				}
+			} else {
+				completion?(nil)
+			}
+		}
+	}
 
 }

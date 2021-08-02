@@ -196,9 +196,9 @@
 			isa = PBXGroup;
 			children = (
 				B5F6243526B5ADCC00F7A897 /* TestHarness_Watch Extension.entitlements */,
+				B5E1E22F26B5559A00F44092 /* WatchWorkoutApp.swift */,
 				B5E1E22D26B5559A00F44092 /* ContentView.swift */,
 				B5F6243326B5AB1500F7A897 /* WorkoutDetailsView.swift */,
-				B5E1E22F26B5559A00F44092 /* WatchWorkoutApp.swift */,
 				B502F54526B6E382009635C2 /* HeartRateLabel.swift */,
 				B5E1E23126B5559A00F44092 /* ComplicationController.swift */,
 				B5E1E23326B5559A00F44092 /* Assets.xcassets */,
