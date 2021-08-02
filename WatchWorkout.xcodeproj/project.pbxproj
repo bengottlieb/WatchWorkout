@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B502F54726B6E4D1009635C2 /* HeartRateLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B502F54526B6E382009635C2 /* HeartRateLabel.swift */; };
 		B5E1E20F26B5552500F44092 /* WatchWorkoutApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E1E20E26B5552500F44092 /* WatchWorkoutApp.swift */; };
 		B5E1E21126B5552500F44092 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E1E21026B5552500F44092 /* ContentView.swift */; };
 		B5E1E21326B5552600F44092 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B5E1E21226B5552600F44092 /* Assets.xcassets */; };
@@ -78,6 +79,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		B502F54526B6E382009635C2 /* HeartRateLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartRateLabel.swift; sourceTree = "<group>"; };
 		B5E1E20B26B5552500F44092 /* TestHarness_Phone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestHarness_Phone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5E1E20E26B5552500F44092 /* WatchWorkoutApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchWorkoutApp.swift; sourceTree = "<group>"; };
 		B5E1E21026B5552500F44092 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -197,6 +199,7 @@
 				B5E1E22D26B5559A00F44092 /* ContentView.swift */,
 				B5F6243326B5AB1500F7A897 /* WorkoutDetailsView.swift */,
 				B5E1E22F26B5559A00F44092 /* WatchWorkoutApp.swift */,
+				B502F54526B6E382009635C2 /* HeartRateLabel.swift */,
 				B5E1E23126B5559A00F44092 /* ComplicationController.swift */,
 				B5E1E23326B5559A00F44092 /* Assets.xcassets */,
 				B5E1E23826B5559A00F44092 /* Info.plist */,
@@ -396,6 +399,7 @@
 				B5E1E22E26B5559A00F44092 /* ContentView.swift in Sources */,
 				B5E1E25226B5583900F44092 /* WatchWorkout.swift in Sources */,
 				B5F6243226B5A2F900F7A897 /* WatchWorkout+Internal.swift in Sources */,
+				B502F54726B6E4D1009635C2 /* HeartRateLabel.swift in Sources */,
 				B5E1E25626B55E7700F44092 /* HealthKit+Extensions.swift in Sources */,
 				B5E1E25E26B6B35900F44092 /* HeartRateMonitor.swift in Sources */,
 				B5E1E24526B5568400F44092 /* WatchWorkoutManager.swift in Sources */,

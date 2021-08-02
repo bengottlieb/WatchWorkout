@@ -11,13 +11,16 @@ struct ContentView: View {
 	@ObservedObject var manager = WatchWorkoutManager.instance
 	
 	var body: some View {
-		if let current = manager.currentWorkout {
-			WorkoutDetailsView(workout: current)
-			if current.phase.hasEnded {
+		VStack() {
+			HeartRateLabel()
+			if let current = manager.currentWorkout {
+				WorkoutDetailsView(workout: current)
+				if current.phase.hasEnded {
+					createWorkoutButton
+				}
+			} else {
 				createWorkoutButton
 			}
-		} else {
-			createWorkoutButton
 		}
 	}
 	

@@ -8,7 +8,7 @@ import HealthKit
 import Suite
 
 
-public class HeartRateMonitor {
+public class HeartRateMonitor: ObservableObject {
 	public static let instance = HeartRateMonitor()
 	
 	public var currentHeartRate = CurrentValueSubject<Int?, Never>(nil)
@@ -37,6 +37,7 @@ public class HeartRateMonitor {
 		let roundedValue = round(rate)
 
 		DispatchQueue.main.async {
+			self.objectWillChange.send()
 			self.history.append(TimeStampedHeartRate(rate: rate))
 			self.currentHeartRate.send(Int(roundedValue))
 		}
