@@ -36,6 +36,7 @@ extension ScenePhase: CustomStringConvertible {
 
 class WatchKitAppDelegate: NSObject, WKExtensionDelegate {
 	func handleActiveWorkoutRecovery() {
+		print("handleActiveWorkoutRecovery")
 		WatchWorkoutManager.instance.recoverActiveWorkout()
 	}
 }

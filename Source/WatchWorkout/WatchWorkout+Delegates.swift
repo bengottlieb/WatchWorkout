@@ -26,7 +26,7 @@ extension WatchWorkout: HKLiveWorkoutBuilderDelegate {
 
 extension WatchWorkout: HKWorkoutSessionDelegate {
 	public func workoutSession(_ workoutSession: HKWorkoutSession, didChangeTo toState: HKWorkoutSessionState, from fromState: HKWorkoutSessionState, date: Date) {
-		logg("Workout transitioned from \(fromState.name) to \(toState.name)")
+		logg("Workout transitioned from \(fromState) to \(toState)")
 		if toState == .ended {
 			completeWorkout(at: date)
 		}

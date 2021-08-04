@@ -9,10 +9,12 @@ import SwiftUI
 import HealthKit
 
 struct ContentView: View {
-    var body: some View {
+	
+	public let heartRateType = HKQuantityType.quantityType(forIdentifier: .heartRate)!
+	var body: some View {
 		
 		Button("Authorize Healthkit") {
-			HKHealthStore().requestAuthorization(toShare: [HKObjectType.workoutType()], read: [HKObjectType.workoutType()]) { success, error in
+			HKHealthStore().requestAuthorization(toShare: [HKObjectType.workoutType()], read: [HKObjectType.workoutType(), heartRateType]) { success, error in
 				if let err = error {
 					print("Error when authorizing HealthKit: \(err)")
 				}
@@ -22,7 +24,7 @@ struct ContentView: View {
 }
 
 struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
+	static var previews: some View {
+		ContentView()
+	}
 }

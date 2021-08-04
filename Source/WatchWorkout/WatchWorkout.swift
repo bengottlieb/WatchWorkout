@@ -61,28 +61,46 @@ public class WatchWorkout: NSObject, ObservableObject {
 		do {
 			phase = .loading
 			if session == nil { session = try HKWorkoutSession(healthStore: healthStore, configuration: configuration) }
-			builder = session?.associatedWorkoutBuilder()
-			session?.delegate = self
-
-			builder?.dataSource = HKLiveWorkoutDataSource(healthStore: healthStore, workoutConfiguration: configuration)
-			builder?.delegate = self
+			guard let session = session else {
+				completion(WorkoutError.failedToCreateSession)
+				phase = .failed(WorkoutError.failedToCreateSession)
+				return
+			}
+			builder = session.associatedWorkoutBuilder()
 			if builder == nil {
 				completion(WorkoutError.failedToCreateBuilder)
 				phase = .failed(WorkoutError.failedToCreateBuilder)
 			}
+			session.delegate = self
+
+			builder?.dataSource = HKLiveWorkoutDataSource(healthStore: healthStore, workoutConfiguration: configuration)
+			builder?.delegate = self
 			builder?.beginCollection(withStart: date) { started, error in
 				DispatchQueue.main.async {
-					if started {
+					logg("Started workout, curent state: \(session.state)")
+					switch session.state {
+					case .stopped, .ended:
+						self.phase = .failed(error ?? WorkoutError.sessionFailedToStart)
+						completion(error ?? WorkoutError.sessionFailedToStart)
+						
+					case .running:
 						self.phase = .active
-						self.session?.startActivity(with: date)
-					}
-					if let err = error {
-						self.phase = .failed(err)
-					} else {
-						self.startedAt = date
+						completion(nil)
+
+					case .notStarted, .prepared:
 						self.phase = .active
+						session.startActivity(with: date)
+						completion(nil)
+
+					case .paused:
+						self.phase = .active
+						session.resume()
+						completion(nil)
+
+					default:
+						self.phase = .failed(error ?? WorkoutError.sessionFailedToStart)
+						completion(error ?? WorkoutError.sessionFailedToStart)
 					}
-					completion(error)
 				}
 			}
 		} catch {

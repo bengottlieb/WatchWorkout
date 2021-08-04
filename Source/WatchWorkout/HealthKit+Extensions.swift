@@ -17,8 +17,8 @@ extension HKWorkoutConfiguration {
 	}
 }
 
-extension HKWorkoutSessionState {
-	var name: String {
+extension HKWorkoutSessionState: CustomStringConvertible {
+	public var description: String {
 		switch self {
 		case .notStarted: return "not started"
 		case .running: return "running"

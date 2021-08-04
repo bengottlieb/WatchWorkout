@@ -23,22 +23,6 @@ struct ContentView: View {
 				createWorkoutButton
 			}
 		}
-		.onChange(of: scenePhase) { phase in
-			print("Scene Phase: \(phase)")
-			switch phase {
-			case .active:
-				WKInterfaceDevice.current().play(.success)
-				
-			case .background:
-				WKInterfaceDevice.current().play(.failure)
-				
-			case .inactive:
-				WKInterfaceDevice.current().play(.retry)
-				
-			default:
-				break
-			}
-		}
 	}
 	
 	var createWorkoutButton: some View {
