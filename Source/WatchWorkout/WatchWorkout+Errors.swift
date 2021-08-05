@@ -19,5 +19,6 @@ extension WatchWorkout {
 		case notRunning
 		case unableToDelete
 		case unableToDeleteDueToMissingWorkout
+		case noSessionWhenRestoringWorkout
 	}
 }

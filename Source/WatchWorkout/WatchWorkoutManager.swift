@@ -13,18 +13,23 @@ public class WatchWorkoutManager: ObservableObject {
 	@Published public var currentWorkout: WatchWorkout?
 	public var store = HKHealthStore()
 	
-	public func recoverActiveWorkout(completion: ErrorCallback? = nil) {
+	public func recoverActiveWorkout(completion: ((Result<WatchWorkout, Error>) -> Void)? = nil) {
 		store.recoverActiveWorkoutSession { session, error in
 			if let session = session {
 				DispatchQueue.main.async {
-					self.currentWorkout = WatchWorkout(session: session)
+					let workout = WatchWorkout(session: session)
+					self.currentWorkout = workout
 					self.currentWorkout?.restore { error in
-						logg(error: error, "Failed to restore a workout from \(session).")
-						completion?(error)
+						if let err = error {
+							logg(error: error, "Failed to restore a workout from \(session).")
+							completion?(.failure(err))
+						} else {
+							completion?(.success(workout))
+						}
 					}
 				}
 			} else {
-				completion?(nil)
+				completion?(.failure(WatchWorkout.WorkoutError.noSessionWhenRestoringWorkout))
 			}
 		}
 	}
