@@ -6,6 +6,7 @@
 
 import Foundation
 
+#if os(watchOS)
 extension WatchWorkout {
 	public enum Phase: Equatable { case idle, loading, active, ending, finishing, ended, deleted, failed(Error)
 		var isIdle: Bool {
@@ -63,4 +64,4 @@ extension WatchWorkout {
 		}
 	}
 }
-
+#endif

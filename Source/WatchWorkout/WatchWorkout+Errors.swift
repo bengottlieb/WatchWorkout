@@ -6,6 +6,7 @@
 
 import Foundation
 
+#if os(watchOS)
 extension WatchWorkout {
 	public enum WorkoutError: String, LocalizedError {
 		case otherWorkoutInProgress
@@ -22,3 +23,4 @@ extension WatchWorkout {
 		case noSessionWhenRestoringWorkout
 	}
 }
+#endif

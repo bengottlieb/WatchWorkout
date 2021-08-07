@@ -1,5 +1,5 @@
 //
-//  WatchWorkoutManager.swift
+//  WatchWorkoutManagerOld.swift
 //
 //  Created by Ben Gottlieb on 7/31/21.
 //
@@ -7,6 +7,7 @@
 import HealthKit
 import Suite
 
+#if os(watchOS)
 public class WatchWorkoutManager: ObservableObject {
 	public static let instance = WatchWorkoutManager()
 
@@ -35,3 +36,4 @@ public class WatchWorkoutManager: ObservableObject {
 	}
 
 }
+#endif

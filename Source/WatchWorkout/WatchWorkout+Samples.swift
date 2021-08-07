@@ -7,6 +7,7 @@
 import HealthKit
 import Suite
 
+#if os(watchOS)
 public extension WatchWorkout {
 	func addSleep(_ kind: HKCategoryValueSleepAnalysis, over range: DateInterval? = nil, metadata: [String: Any]? = nil, completion: ErrorCallback? = nil) {
 		
@@ -50,27 +51,34 @@ public extension WatchWorkout {
 	}
 	
 	func add(samples: [HKSample], completion: ErrorCallback? = nil) {
-		guard hasStarted else {
-			completion?(WorkoutError.notRunning)
-			return
-		}
-		
-		guard samples.isNotEmpty else {
-			completion?(nil)
-			return
-		}
-
-		guard let builder = builder else {
-			completion?(WorkoutError.noBuilderAvailable)
-			return
-		}
-		
-		builder.add(samples) { success, error in
-			if success {
+		enqueue {
+			guard self.hasStarted else {
+				completion?(WorkoutError.notRunning)
+				self.handlePending()
+				return
+			}
+			
+			guard samples.isNotEmpty else {
 				completion?(nil)
-			} else {
-				completion?(error ?? WorkoutError.failedToAddSamples)
+				self.handlePending()
+				return
+			}
+
+			guard let builder = self.builder else {
+				completion?(WorkoutError.noBuilderAvailable)
+				self.handlePending()
+				return
+			}
+			
+			builder.add(samples) { success, error in
+				if success {
+					completion?(nil)
+				} else {
+					completion?(error ?? WorkoutError.failedToAddSamples)
+				}
+				self.handlePending()
 			}
 		}
 	}
 }
+#endif

@@ -7,20 +7,24 @@
 import Suite
 import HealthKit
 
+#if os(watchOS)
 public class WatchWorkout: NSObject, ObservableObject {
-	@Published public internal(set) var phase = Phase.idle
+	@Published public internal(set) var phase = Phase.idle { didSet {
+		logg("Current WatchWorkout Phase: \(phase)")
+	}}
 	@Published public var startedAt: Date?
 	@Published public var endedAt: Date?
 	@Published public var errors: [Error] = []
 	public internal(set) var isDeleted = false
 	public var hasStarted: Bool { startedAt != nil }
 	
-
 	public var workout: HKWorkout?
 
 	let healthStore = HKHealthStore()
 	var builder: HKLiveWorkoutBuilder?
 	var session: HKWorkoutSession?
+	var pending: [() -> Void] = []
+	var isProcessing = false
 	
 	var didFinishDeletingCompletion: ErrorCallback?
 
@@ -47,101 +51,133 @@ public class WatchWorkout: NSObject, ObservableObject {
 		start(at: session?.startDate ?? Date(), completion: completion)
 	}
 	
-	public func start(at date: Date = Date(), completion: @escaping ErrorCallback) {
-		if WatchWorkoutManager.instance.currentWorkout?.phase.isRunning == true {
-			completion(WorkoutError.otherWorkoutInProgress)
-			return
-		}
+	func enqueue(_ block: @escaping () -> Void) {
+		pending.append(block)
+		if !isProcessing { handlePending() }
+	}
+	
+	func handlePending() {
+		isProcessing = false
+		guard let next = pending.first else { return }
 		
-		if !phase.isIdle {
-			completion(WorkoutError.workoutAlreadyStarted)
-			return
-		}
-
-		do {
-			phase = .loading
-			if session == nil { session = try HKWorkoutSession(healthStore: healthStore, configuration: configuration) }
-			guard let session = session else {
-				completion(WorkoutError.failedToCreateSession)
-				phase = .failed(WorkoutError.failedToCreateSession)
+		pending.removeFirst()
+		isProcessing = true
+		next()
+	}
+	
+	public func start(at date: Date = Date(), completion: @escaping ErrorCallback) {
+		enqueue {
+			if WatchWorkoutManager.instance.currentWorkout?.phase.isRunning == true {
+				completion(WorkoutError.otherWorkoutInProgress)
+				self.handlePending()
 				return
 			}
-			builder = session.associatedWorkoutBuilder()
-			if builder == nil {
-				completion(WorkoutError.failedToCreateBuilder)
-				phase = .failed(WorkoutError.failedToCreateBuilder)
+			
+			if !self.phase.isIdle {
+				completion(WorkoutError.workoutAlreadyStarted)
+				self.handlePending()
+				return
 			}
-			session.delegate = self
 
-			builder?.dataSource = HKLiveWorkoutDataSource(healthStore: healthStore, workoutConfiguration: configuration)
-			builder?.delegate = self
-			builder?.beginCollection(withStart: date) { started, error in
-				DispatchQueue.main.async {
-					logg("Started workout, curent state: \(session.state)")
-					switch session.state {
-					case .stopped, .ended:
-						self.phase = .failed(error ?? WorkoutError.sessionFailedToStart)
-						completion(error ?? WorkoutError.sessionFailedToStart)
-						
-					case .running:
-						self.phase = .active
-						completion(nil)
+			do {
+				self.phase = .loading
+				if self.session == nil { self.session = try HKWorkoutSession(healthStore: self.healthStore, configuration: self.configuration) }
+				guard let session = self.session else {
+					completion(WorkoutError.failedToCreateSession)
+					self.phase = .failed(WorkoutError.failedToCreateSession)
+					self.handlePending()
+					return
+				}
+				self.builder = session.associatedWorkoutBuilder()
+				if self.builder == nil {
+					completion(WorkoutError.failedToCreateBuilder)
+					self.phase = .failed(WorkoutError.failedToCreateBuilder)
+					self.handlePending()
+					return
+				}
+				session.delegate = self
 
-					case .notStarted, .prepared:
-						self.phase = .active
-						session.startActivity(with: date)
-						completion(nil)
+				self.builder?.dataSource = HKLiveWorkoutDataSource(healthStore: self.healthStore, workoutConfiguration: self.configuration)
+				self.builder?.delegate = self
+				self.builder?.beginCollection(withStart: date) { started, error in
+					DispatchQueue.main.async {
+						logg("Started workout, curent state: \(session.state)")
+						switch session.state {
+						case .stopped, .ended:
+							self.phase = .failed(error ?? WorkoutError.sessionFailedToStart)
+							completion(error ?? WorkoutError.sessionFailedToStart)
+							
+						case .running:
+							self.phase = .active
+							completion(nil)
 
-					case .paused:
-						self.phase = .active
-						session.resume()
-						completion(nil)
+						case .notStarted, .prepared:
+							self.phase = .active
+							session.startActivity(with: date)
+							completion(nil)
 
-					default:
-						self.phase = .failed(error ?? WorkoutError.sessionFailedToStart)
-						completion(error ?? WorkoutError.sessionFailedToStart)
+						case .paused:
+							self.phase = .active
+							session.resume()
+							completion(nil)
+
+						default:
+							self.phase = .failed(error ?? WorkoutError.sessionFailedToStart)
+							completion(error ?? WorkoutError.sessionFailedToStart)
+						}
+						self.handlePending()
 					}
 				}
+			} catch {
+				completion(error)
+				self.handlePending()
 			}
-		} catch {
-			completion(error)
 		}
 	}
 	
 	public func end(at date: Date = Date()) {
-		guard phase == .active, let session = self.session else {
-			phase = phase == .active ? .idle : phase
-			return
+		enqueue {
+			guard self.phase == .active, let session = self.session else {
+				self.phase = self.phase == .active ? .idle : self.phase
+				return
+			}
+			
+			self.phase = .ending
+			self.endedAt = date
+			session.stopActivity(with: date)
+			session.end()
 		}
-		
-		phase = .ending
-		endedAt = date
-		session.stopActivity(with: date)
-		session.end()
 	}
 
 	public func delete(completion: @escaping ErrorCallback) {
-		if isDeleted {
-			completion(nil)
-			return
-		}
-		
-		if phase == .ended {
-			deleteFromHealthKit(completion: completion)
-			return
-		}
+		enqueue {
+			if self.isDeleted {
+				completion(nil)
+				self.handlePending()
+				return
+			}
+			
+			if self.phase == .ended {
+				self.deleteFromHealthKit(completion: completion)
+				self.handlePending()
+				return
+			}
 
-		guard phase.isRunning else {
-			completion(WorkoutError.notRunning)
-			return
+			guard self.phase.isRunning else {
+				completion(WorkoutError.notRunning)
+				self.handlePending()
+				return
+			}
+			
+			self.didFinishDeletingCompletion = completion
+			self.isDeleted = true
+			self.end()
+			self.handlePending()
 		}
-		
-		didFinishDeletingCompletion = completion
-		isDeleted = true
-		end()
 	}
 }
 
 public extension WatchWorkout {
 	static var sample = WatchWorkout(activity: .rugby)
 }
+#endif

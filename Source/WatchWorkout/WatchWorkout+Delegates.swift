@@ -7,7 +7,7 @@
 import HealthKit
 import Suite
 
-
+#if os(watchOS)
 extension WatchWorkout: HKLiveWorkoutBuilderDelegate {
 	public func workoutBuilder(_ workoutBuilder: HKLiveWorkoutBuilder, didCollectDataOf collectedTypes: Set<HKSampleType>) {
 		if let statistics = workoutBuilder.statistics(for: HeartRateMonitor.heartRateType) {
@@ -36,5 +36,4 @@ extension WatchWorkout: HKWorkoutSessionDelegate {
 		logg(error: error, "Workout session failed")
 	}
 }
-
-
+#endif
