@@ -139,6 +139,7 @@ public class WatchWorkout: NSObject, ObservableObject {
 		enqueue {
 			guard self.phase == .active, let session = self.session else {
 				self.phase = self.phase == .active ? .idle : self.phase
+				self.handlePending()
 				return
 			}
 			
@@ -146,6 +147,7 @@ public class WatchWorkout: NSObject, ObservableObject {
 			self.endedAt = date
 			session.stopActivity(with: date)
 			session.end()
+			self.handlePending()
 		}
 	}
 
