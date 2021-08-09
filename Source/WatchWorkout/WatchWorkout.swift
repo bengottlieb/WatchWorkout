@@ -135,19 +135,34 @@ public class WatchWorkout: NSObject, ObservableObject {
 		}
 	}
 	
-	public func end(at date: Date = Date()) {
+	public func end(at date: Date = Date(), completion: ErrorCallback? = nil) {
 		enqueue {
-			guard self.phase == .active, let session = self.session else {
-				self.phase = self.phase == .active ? .idle : self.phase
+			guard self.phase != .ended else {
 				self.handlePending()
+				completion?(nil)
 				return
 			}
 			
+			guard self.phase == .active else {
+				self.phase = .idle
+				self.handlePending()
+				completion?(WatchWorkout.WorkoutError.workoutWasNotActive)
+				return
+			}
+
+			guard let session = self.session else {
+				self.phase = self.phase == .active ? .idle : self.phase
+				self.handlePending()
+				completion?(WatchWorkout.WorkoutError.noSessionWhenEndingWorkout)
+				return
+			}
+
 			self.phase = .ending
 			self.endedAt = date
 			session.stopActivity(with: date)
 			session.end()
 			self.handlePending()
+			completion?(nil)
 		}
 	}
 

@@ -21,6 +21,11 @@ extension WatchWorkout {
 		case unableToDelete
 		case unableToDeleteDueToMissingWorkout
 		case noSessionWhenRestoringWorkout
+		case noSessionWhenEndingWorkout
+		case workoutWasNotActive
+	
+		public var errorDescription: String? { rawValue }
 	}
+	
 }
 #endif
