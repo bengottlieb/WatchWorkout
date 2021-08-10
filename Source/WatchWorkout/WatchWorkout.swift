@@ -137,7 +137,7 @@ public class WatchWorkout: NSObject, ObservableObject {
 	
 	public func end(at date: Date = Date(), completion: ErrorCallback? = nil) {
 		enqueue {
-			guard self.phase != .ended else {
+			guard self.phase != .ended, self.phase != .ending else {
 				self.handlePending()
 				completion?(nil)
 				return
@@ -157,6 +157,7 @@ public class WatchWorkout: NSObject, ObservableObject {
 				return
 			}
 
+			logg("Ending workout, curent state: \(session.state)")
 			self.phase = .ending
 			self.endedAt = date
 			session.stopActivity(with: date)
