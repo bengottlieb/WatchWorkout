@@ -10,7 +10,7 @@ import HealthKit
 #if os(watchOS)
 public class WatchWorkout: NSObject, ObservableObject {
 	@Published public internal(set) var phase = Phase.idle { didSet {
-		logg("Current WatchWorkout Phase: \(phase)")
+		if WatchWorkoutManager.instance.loggingEnabled { logg("Current WatchWorkout Phase: \(phase)") }
 	}}
 	@Published public var startedAt: Date?
 	@Published public var endedAt: Date?
@@ -67,6 +67,7 @@ public class WatchWorkout: NSObject, ObservableObject {
 	
 	public func start(at date: Date = Date(), completion: @escaping ErrorCallback) {
 		enqueue {
+			self.startedAt = date
 			if WatchWorkoutManager.instance.currentWorkout?.phase.isRunning == true {
 				completion(WorkoutError.otherWorkoutInProgress)
 				self.handlePending()
@@ -101,7 +102,7 @@ public class WatchWorkout: NSObject, ObservableObject {
 				self.builder?.delegate = self
 				self.builder?.beginCollection(withStart: date) { started, error in
 					DispatchQueue.main.async {
-						logg("Started workout, curent state: \(session.state)")
+						if WatchWorkoutManager.instance.loggingEnabled { logg("Started workout, curent state: \(session.state)") }
 						switch session.state {
 						case .stopped, .ended:
 							self.phase = .failed(error ?? WorkoutError.sessionFailedToStart)
@@ -137,7 +138,8 @@ public class WatchWorkout: NSObject, ObservableObject {
 	
 	public func end(at date: Date = Date(), completion: ErrorCallback? = nil) {
 		enqueue {
-			guard self.phase != .ended, self.phase != .ending else {
+			guard self.phase != .ended, self.phase != .ending, self.session?.state != .ended else {
+				print("Already ended")
 				self.handlePending()
 				completion?(nil)
 				return
@@ -157,7 +159,7 @@ public class WatchWorkout: NSObject, ObservableObject {
 				return
 			}
 
-			logg("Ending workout, curent state: \(session.state)")
+			if WatchWorkoutManager.instance.loggingEnabled { logg("Ending workout, current state: \(session.state)") }
 			self.phase = .ending
 			self.endedAt = date
 			session.stopActivity(with: date)

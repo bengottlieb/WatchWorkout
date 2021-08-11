@@ -13,7 +13,8 @@ public class WatchWorkoutManager: ObservableObject {
 
 	@Published public var currentWorkout: WatchWorkout?
 	public var store = HKHealthStore()
-	
+	public var loggingEnabled = false
+
 	public func recoverActiveWorkout(completion: ((Result<WatchWorkout, Error>) -> Void)? = nil) {
 		store.recoverActiveWorkoutSession { session, error in
 			if let session = session {

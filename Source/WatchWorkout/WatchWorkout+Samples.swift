@@ -52,6 +52,7 @@ public extension WatchWorkout {
 	
 	func add(samples: [HKSample], completion: ErrorCallback? = nil) {
 		enqueue {
+			if WatchWorkoutManager.instance.loggingEnabled { logg("Adding samples, Current phase: \(self.phase)") }
 			guard self.hasStarted else {
 				completion?(WorkoutError.notRunning)
 				self.handlePending()
@@ -59,6 +60,7 @@ public extension WatchWorkout {
 			}
 			
 			guard samples.isNotEmpty else {
+				if WatchWorkoutManager.instance.loggingEnabled { logg("Not Adding samples, no samples") }
 				completion?(nil)
 				self.handlePending()
 				return
@@ -71,6 +73,7 @@ public extension WatchWorkout {
 			}
 			
 			builder.add(samples) { success, error in
+				if WatchWorkoutManager.instance.loggingEnabled { logg("Added samples \(samples) \(success) \(error?.localizedDescription ?? "no error")") }
 				if success {
 					completion?(nil)
 				} else {
