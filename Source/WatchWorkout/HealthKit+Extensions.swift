@@ -6,6 +6,7 @@
 
 import HealthKit
 
+#if os(watchOS)
 extension HKWorkoutConfiguration {
 	public static var defaultConfiguration = HKWorkoutConfiguration(activity: .other, location: .outdoor)
 	
@@ -30,3 +31,4 @@ extension HKWorkoutSessionState: CustomStringConvertible {
 		}
 	}
 }
+#endif
