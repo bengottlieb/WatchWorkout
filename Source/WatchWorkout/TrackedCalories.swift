@@ -10,7 +10,7 @@ import HealthKit
 public class TrackedCalories: CustomStringConvertible {
 	let queue = DispatchQueue(label: "TrackedCalories", qos: .utility)
 	var recorded: [RecordedCalories] = []
-	var total: Double = 0
+	public var total: Double = 0
 	
 	struct RecordedCalories {
 		let interval: DateInterval
