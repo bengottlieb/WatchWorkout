@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		B502F54726B6E4D1009635C2 /* HeartRateLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B502F54526B6E382009635C2 /* HeartRateLabel.swift */; };
+		B556294B26C58ED4001DD83B /* TrackedCalories.swift in Sources */ = {isa = PBXBuildFile; fileRef = B556294A26C58ED4001DD83B /* TrackedCalories.swift */; };
 		B5E1E20F26B5552500F44092 /* WatchWorkoutApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E1E20E26B5552500F44092 /* WatchWorkoutApp.swift */; };
 		B5E1E21126B5552500F44092 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E1E21026B5552500F44092 /* ContentView.swift */; };
 		B5E1E21326B5552600F44092 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B5E1E21226B5552600F44092 /* Assets.xcassets */; };
@@ -80,6 +81,7 @@
 
 /* Begin PBXFileReference section */
 		B502F54526B6E382009635C2 /* HeartRateLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartRateLabel.swift; sourceTree = "<group>"; };
+		B556294A26C58ED4001DD83B /* TrackedCalories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackedCalories.swift; sourceTree = "<group>"; };
 		B5E1E20B26B5552500F44092 /* TestHarness_Phone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestHarness_Phone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5E1E20E26B5552500F44092 /* WatchWorkoutApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchWorkoutApp.swift; sourceTree = "<group>"; };
 		B5E1E21026B5552500F44092 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -234,6 +236,7 @@
 				B5E1E25926B5609E00F44092 /* WatchWorkout.Phase.swift */,
 				B5E1E25726B55EC700F44092 /* WatchWorkout+Errors.swift */,
 				B5E1E25326B55DF500F44092 /* WatchWorkout+Delegates.swift */,
+				B556294A26C58ED4001DD83B /* TrackedCalories.swift */,
 				B5E1E25B26B6A80F00F44092 /* WatchWorkout+Samples.swift */,
 				B5E1E25526B55E7700F44092 /* HealthKit+Extensions.swift */,
 			);
@@ -410,6 +413,7 @@
 				B5F6243426B5AB1500F7A897 /* WorkoutDetailsView.swift in Sources */,
 				B5E1E23226B5559A00F44092 /* ComplicationController.swift in Sources */,
 				B5E1E25C26B6A80F00F44092 /* WatchWorkout+Samples.swift in Sources */,
+				B556294B26C58ED4001DD83B /* TrackedCalories.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

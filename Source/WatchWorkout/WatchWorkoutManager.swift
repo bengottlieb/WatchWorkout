@@ -15,6 +15,10 @@ public class WatchWorkoutManager: ObservableObject {
 	public var store = HKHealthStore()
 	public var loggingEnabled = false
 
+	public static let activeCalorieType = HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned)!
+	public static let basalCalorieType = HKQuantityType.quantityType(forIdentifier: .basalEnergyBurned)!
+	public static let calorieUnit = HKUnit.kilocalorie()
+
 	public func recoverActiveWorkout(completion: ((Result<WatchWorkout, Error>) -> Void)? = nil) {
 		store.recoverActiveWorkoutSession { session, error in
 			if let session = session {

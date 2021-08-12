@@ -16,7 +16,7 @@ extension WatchWorkout {
 				self.handlePending()
 				return
 			}
-			
+
 			builder.endCollection(withEnd: date) { success, collectionError in
 				DispatchQueue.main.async {
 					self.phase = .finishing

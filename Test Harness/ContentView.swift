@@ -14,7 +14,7 @@ struct ContentView: View {
 	var body: some View {
 		
 		Button("Authorize Healthkit") {
-			HKHealthStore().requestAuthorization(toShare: [HKObjectType.workoutType()], read: [HKObjectType.workoutType(), heartRateType]) { success, error in
+			HKHealthStore().requestAuthorization(toShare: [HKObjectType.workoutType()], read: [HKObjectType.workoutType(), heartRateType, HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned)!, HKQuantityType.quantityType(forIdentifier: .basalEnergyBurned)!]) { success, error in
 				if let err = error {
 					print("Error when authorizing HealthKit: \(err)")
 				}

@@ -19,6 +19,9 @@ public class WatchWorkout: NSObject, ObservableObject {
 	public var hasStarted: Bool { startedAt != nil }
 	
 	public var workout: HKWorkout?
+	public let basalEnergy = TrackedCalories()
+	public let activeEnergy = TrackedCalories()
+
 
 	let healthStore = HKHealthStore()
 	var builder: HKLiveWorkoutBuilder?

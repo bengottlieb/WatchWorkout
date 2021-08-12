@@ -10,11 +10,14 @@ import Suite
 #if os(watchOS)
 extension WatchWorkout: HKLiveWorkoutBuilderDelegate {
 	public func workoutBuilder(_ workoutBuilder: HKLiveWorkoutBuilder, didCollectDataOf collectedTypes: Set<HKSampleType>) {
-		if let statistics = workoutBuilder.statistics(for: HeartRateMonitor.heartRateType) {
-			if let value = statistics.mostRecentQuantity()?.doubleValue(for: HeartRateMonitor.heartRateUnit) {
+		if let heartRateStats = workoutBuilder.statistics(for: HeartRateMonitor.heartRateType) {
+			if let value = heartRateStats.mostRecentQuantity()?.doubleValue(for: HeartRateMonitor.heartRateUnit) {
 				HeartRateMonitor.instance.set(heartRate: value)
 			}
 		}
+		
+		if let activeEnergyStats = workoutBuilder.statistics(for: WatchWorkoutManager.activeCalorieType) { activeEnergy.track(statistics: activeEnergyStats) }
+		if let basalEnergyStats = workoutBuilder.statistics(for: WatchWorkoutManager.basalCalorieType) { basalEnergy.track(statistics: basalEnergyStats) }
 	}
 	
 	public func workoutBuilderDidCollectEvent(_ workoutBuilder: HKLiveWorkoutBuilder) {
