@@ -141,6 +141,10 @@ public class WatchWorkout: NSObject, ObservableObject {
 	
 	public func end(at date: Date = Date(), completion: ErrorCallback? = nil) {
 		enqueue {
+			print("------------- Active -------------")
+			print(self.activeEnergy)
+			print("------------- Basal -------------")
+			print(self.basalEnergy)
 			guard self.phase != .ended, self.phase != .ending, self.session?.state != .ended else {
 				print("Already ended")
 				self.handlePending()
