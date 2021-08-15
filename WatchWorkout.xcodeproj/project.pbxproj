@@ -31,6 +31,7 @@
 		B5E1E25A26B5609E00F44092 /* WatchWorkout.Phase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E1E25926B5609E00F44092 /* WatchWorkout.Phase.swift */; };
 		B5E1E25C26B6A80F00F44092 /* WatchWorkout+Samples.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E1E25B26B6A80F00F44092 /* WatchWorkout+Samples.swift */; };
 		B5E1E25E26B6B35900F44092 /* HeartRateMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E1E25D26B6B35900F44092 /* HeartRateMonitor.swift */; };
+		B5ED3B0726C9B0B400F4577D /* WatchWorkout+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5ED3B0626C9B0B400F4577D /* WatchWorkout+String.swift */; };
 		B5F6243226B5A2F900F7A897 /* WatchWorkout+Internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F6243126B5A2F900F7A897 /* WatchWorkout+Internal.swift */; };
 		B5F6243426B5AB1500F7A897 /* WorkoutDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F6243326B5AB1500F7A897 /* WorkoutDetailsView.swift */; };
 		B5F6243826B5ADCC00F7A897 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5F6243726B5ADCC00F7A897 /* HealthKit.framework */; };
@@ -109,6 +110,7 @@
 		B5E1E25B26B6A80F00F44092 /* WatchWorkout+Samples.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WatchWorkout+Samples.swift"; sourceTree = "<group>"; };
 		B5E1E25D26B6B35900F44092 /* HeartRateMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartRateMonitor.swift; sourceTree = "<group>"; };
 		B5E1E25F26B6B4FD00F44092 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
+		B5ED3B0626C9B0B400F4577D /* WatchWorkout+String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WatchWorkout+String.swift"; sourceTree = "<group>"; };
 		B5F6243126B5A2F900F7A897 /* WatchWorkout+Internal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WatchWorkout+Internal.swift"; sourceTree = "<group>"; };
 		B5F6243326B5AB1500F7A897 /* WorkoutDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutDetailsView.swift; sourceTree = "<group>"; };
 		B5F6243526B5ADCC00F7A897 /* TestHarness_Watch Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "TestHarness_Watch Extension.entitlements"; sourceTree = "<group>"; };
@@ -232,6 +234,7 @@
 				B5E1E24426B5568400F44092 /* WatchWorkoutManager.swift */,
 				B5E1E25D26B6B35900F44092 /* HeartRateMonitor.swift */,
 				B5E1E25126B5583900F44092 /* WatchWorkout.swift */,
+				B5ED3B0626C9B0B400F4577D /* WatchWorkout+String.swift */,
 				B5F6243126B5A2F900F7A897 /* WatchWorkout+Internal.swift */,
 				B5E1E25926B5609E00F44092 /* WatchWorkout.Phase.swift */,
 				B5E1E25726B55EC700F44092 /* WatchWorkout+Errors.swift */,
@@ -407,6 +410,7 @@
 				B5E1E25E26B6B35900F44092 /* HeartRateMonitor.swift in Sources */,
 				B5E1E24526B5568400F44092 /* WatchWorkoutManager.swift in Sources */,
 				B5E1E23026B5559A00F44092 /* WatchWorkoutApp.swift in Sources */,
+				B5ED3B0726C9B0B400F4577D /* WatchWorkout+String.swift in Sources */,
 				B5E1E25A26B5609E00F44092 /* WatchWorkout.Phase.swift in Sources */,
 				B5E1E25426B55DF500F44092 /* WatchWorkout+Delegates.swift in Sources */,
 				B5E1E25826B55EC700F44092 /* WatchWorkout+Errors.swift in Sources */,

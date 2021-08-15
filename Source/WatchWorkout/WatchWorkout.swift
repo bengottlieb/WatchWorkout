@@ -21,6 +21,7 @@ public class WatchWorkout: NSObject, ObservableObject {
 	public var workout: HKWorkout?
 	public let basalEnergy = TrackedCalories()
 	public let activeEnergy = TrackedCalories()
+	public private(set) var wasRestored = false
 
 
 	let healthStore = HKHealthStore()
@@ -40,6 +41,7 @@ public class WatchWorkout: NSObject, ObservableObject {
 	
 	public init(configuration config: HKWorkoutConfiguration?) {
 		configuration = config ?? .defaultConfiguration
+		wasRestored = config != nil
 		super.init()
 	}
 	
@@ -51,6 +53,10 @@ public class WatchWorkout: NSObject, ObservableObject {
 	}
 
 	func restore(completion: @escaping ErrorCallback) {
+		if phase.hasEnded {
+			completion(WorkoutError.workoutAlreadyEnded)
+			return
+		}
 		start(at: session?.startDate ?? Date(), completion: completion)
 	}
 	
@@ -70,6 +76,10 @@ public class WatchWorkout: NSObject, ObservableObject {
 	
 	public func start(at date: Date = Date(), completion: @escaping ErrorCallback) {
 		enqueue {
+			if self.phase.hasEnded {
+				completion(WorkoutError.workoutAlreadyEnded)
+				return
+			}
 			self.startedAt = date
 			if WatchWorkoutManager.instance.currentWorkout?.phase.isRunning == true {
 				completion(WorkoutError.otherWorkoutInProgress)
@@ -141,10 +151,10 @@ public class WatchWorkout: NSObject, ObservableObject {
 	
 	public func end(at date: Date = Date(), completion: ErrorCallback? = nil) {
 		enqueue {
-			print("------------- Active -------------")
-			print(self.activeEnergy)
-			print("------------- Basal -------------")
-			print(self.basalEnergy)
+//			print("------------- Active -------------")
+//			print(self.activeEnergy)
+//			print("------------- Basal -------------")
+//			print(self.basalEnergy)
 			guard self.phase != .ended, self.phase != .ending, self.session?.state != .ended else {
 				print("Already ended")
 				self.handlePending()

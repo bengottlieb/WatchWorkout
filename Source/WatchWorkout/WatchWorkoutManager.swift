@@ -24,12 +24,12 @@ public class WatchWorkoutManager: ObservableObject {
 			if let session = session {
 				DispatchQueue.main.async {
 					let workout = WatchWorkout(session: session)
-					self.currentWorkout = workout
-					self.currentWorkout?.restore { error in
+					workout.restore { error in
 						if let err = error {
 							logg(error: error, "Failed to restore a workout from \(session).")
 							completion?(.failure(err))
 						} else {
+							self.currentWorkout = workout
 							completion?(.success(workout))
 						}
 					}

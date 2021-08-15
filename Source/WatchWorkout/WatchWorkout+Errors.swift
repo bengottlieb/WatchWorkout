@@ -11,6 +11,7 @@ extension WatchWorkout {
 	public enum WorkoutError: String, LocalizedError {
 		case otherWorkoutInProgress
 		case workoutAlreadyStarted
+		case workoutAlreadyEnded
 		case failedToCreateSession
 		case failedToCreateBuilder
 		case sessionFailedToStart

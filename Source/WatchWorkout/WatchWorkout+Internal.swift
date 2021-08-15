@@ -59,7 +59,7 @@ extension WatchWorkout {
 				}
 			}
 		} else {
-			self.phase = .failed(WorkoutError.unableToDeleteDueToMissingWorkout)
+			self.phase = .deleted
 			completion?(WorkoutError.unableToDeleteDueToMissingWorkout)
 		}
 		
