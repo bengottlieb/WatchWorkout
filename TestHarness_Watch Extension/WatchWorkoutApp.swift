@@ -7,11 +7,18 @@
 
 import SwiftUI
 import WatchKit
+import Portal
 
 @main
 struct WatchWorkoutApp: App {
 	@WKExtensionDelegateAdaptor(WatchKitAppDelegate.self) var delegate
 	@Environment(\.scenePhase) var scenePhase
+	
+	init() {
+		PortalToPhone.setup(messageHandler: MessageHandler.instance)
+		DevicePortal.instance.connect()
+	//	DevicePortal.instance.startPinging()
+	}
 	
 	var body: some Scene {
 		WindowGroup {

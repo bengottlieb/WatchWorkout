@@ -32,6 +32,9 @@
 		B5E1E25C26B6A80F00F44092 /* WatchWorkout+Samples.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E1E25B26B6A80F00F44092 /* WatchWorkout+Samples.swift */; };
 		B5E1E25E26B6B35900F44092 /* HeartRateMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E1E25D26B6B35900F44092 /* HeartRateMonitor.swift */; };
 		B5ED3B0726C9B0B400F4577D /* WatchWorkout+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5ED3B0626C9B0B400F4577D /* WatchWorkout+String.swift */; };
+		B5ED3B0926C9BA8D00F4577D /* MessageHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5ED3B0826C9BA8D00F4577D /* MessageHandler.swift */; };
+		B5ED3B0A26C9BA8D00F4577D /* MessageHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5ED3B0826C9BA8D00F4577D /* MessageHandler.swift */; };
+		B5ED3B0C26C9BAB500F4577D /* Portal in Frameworks */ = {isa = PBXBuildFile; productRef = B5ED3B0B26C9BAB500F4577D /* Portal */; };
 		B5F6243226B5A2F900F7A897 /* WatchWorkout+Internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F6243126B5A2F900F7A897 /* WatchWorkout+Internal.swift */; };
 		B5F6243426B5AB1500F7A897 /* WorkoutDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F6243326B5AB1500F7A897 /* WorkoutDetailsView.swift */; };
 		B5F6243826B5ADCC00F7A897 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5F6243726B5ADCC00F7A897 /* HealthKit.framework */; };
@@ -111,6 +114,7 @@
 		B5E1E25D26B6B35900F44092 /* HeartRateMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartRateMonitor.swift; sourceTree = "<group>"; };
 		B5E1E25F26B6B4FD00F44092 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		B5ED3B0626C9B0B400F4577D /* WatchWorkout+String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WatchWorkout+String.swift"; sourceTree = "<group>"; };
+		B5ED3B0826C9BA8D00F4577D /* MessageHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageHandler.swift; sourceTree = "<group>"; };
 		B5F6243126B5A2F900F7A897 /* WatchWorkout+Internal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WatchWorkout+Internal.swift"; sourceTree = "<group>"; };
 		B5F6243326B5AB1500F7A897 /* WorkoutDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutDetailsView.swift; sourceTree = "<group>"; };
 		B5F6243526B5ADCC00F7A897 /* TestHarness_Watch Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "TestHarness_Watch Extension.entitlements"; sourceTree = "<group>"; };
@@ -124,6 +128,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B5ED3B0C26C9BAB500F4577D /* Portal in Frameworks */,
 				B5F6243B26B5AED900F7A897 /* HealthKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -203,6 +208,7 @@
 				B5E1E22F26B5559A00F44092 /* WatchWorkoutApp.swift */,
 				B5E1E22D26B5559A00F44092 /* ContentView.swift */,
 				B5F6243326B5AB1500F7A897 /* WorkoutDetailsView.swift */,
+				B5ED3B0826C9BA8D00F4577D /* MessageHandler.swift */,
 				B502F54526B6E382009635C2 /* HeartRateLabel.swift */,
 				B5E1E23126B5559A00F44092 /* ComplicationController.swift */,
 				B5E1E23326B5559A00F44092 /* Assets.xcassets */,
@@ -273,6 +279,9 @@
 				B5E1E23A26B5559A00F44092 /* PBXTargetDependency */,
 			);
 			name = TestHarness_Phone;
+			packageProductDependencies = (
+				B5ED3B0B26C9BAB500F4577D /* Portal */,
+			);
 			productName = WatchWorkout;
 			productReference = B5E1E20B26B5552500F44092 /* TestHarness_Phone.app */;
 			productType = "com.apple.product-type.application";
@@ -394,6 +403,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B5E1E21126B5552500F44092 /* ContentView.swift in Sources */,
+				B5ED3B0926C9BA8D00F4577D /* MessageHandler.swift in Sources */,
 				B5E1E20F26B5552500F44092 /* WatchWorkoutApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -411,6 +421,7 @@
 				B5E1E24526B5568400F44092 /* WatchWorkoutManager.swift in Sources */,
 				B5E1E23026B5559A00F44092 /* WatchWorkoutApp.swift in Sources */,
 				B5ED3B0726C9B0B400F4577D /* WatchWorkout+String.swift in Sources */,
+				B5ED3B0A26C9BA8D00F4577D /* MessageHandler.swift in Sources */,
 				B5E1E25A26B5609E00F44092 /* WatchWorkout.Phase.swift in Sources */,
 				B5E1E25426B55DF500F44092 /* WatchWorkout+Delegates.swift in Sources */,
 				B5E1E25826B55EC700F44092 /* WatchWorkout+Errors.swift in Sources */,
@@ -620,7 +631,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 7.4;
+				WATCHOS_DEPLOYMENT_TARGET = 7.3;
 			};
 			name = Debug;
 		};
@@ -645,7 +656,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 7.4;
+				WATCHOS_DEPLOYMENT_TARGET = 7.3;
 			};
 			name = Release;
 		};
@@ -665,7 +676,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 7.4;
+				WATCHOS_DEPLOYMENT_TARGET = 7.3;
 			};
 			name = Debug;
 		};
@@ -685,7 +696,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 7.4;
+				WATCHOS_DEPLOYMENT_TARGET = 7.3;
 			};
 			name = Release;
 		};
@@ -759,6 +770,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B5E1E24C26B5570000F44092 /* XCRemoteSwiftPackageReference "suite" */;
 			productName = Suite;
+		};
+		B5ED3B0B26C9BAB500F4577D /* Portal */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Portal;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

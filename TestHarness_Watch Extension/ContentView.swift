@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Portal
 
 struct ContentView: View {
 	@ObservedObject var manager = WatchWorkoutManager.instance
@@ -14,23 +15,27 @@ struct ContentView: View {
 	@State var descriptionText = ""
 
 	var body: some View {
-		ScrollView() {
-			VStack() {
-				HeartRateLabel()
-				if let current = manager.currentWorkout {
-					WorkoutDetailsView(workout: current)
-					if current.phase.hasEnded {
+		ZStack() {
+			ScrollView() {
+				VStack() {
+					HeartRateLabel()
+					if let current = manager.currentWorkout {
+						WorkoutDetailsView(workout: current)
+						if current.phase.hasEnded {
+							createWorkoutButton
+						}
+					} else {
 						createWorkoutButton
 					}
-				} else {
-					createWorkoutButton
+					
+					Text(descriptionText)
 				}
-				
-				Text(descriptionText)
 			}
-		}
-		.onReceive(timer) { _ in
-			descriptionText = manager.currentWorkout?.description ?? "--"
+			.onReceive(timer) { _ in
+				descriptionText = manager.currentWorkout?.description ?? "--"
+			}
+			
+			FullScreenConnectionIndicator()
 		}
 	}
 	
