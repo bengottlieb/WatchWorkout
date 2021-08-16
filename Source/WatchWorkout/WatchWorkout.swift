@@ -41,12 +41,12 @@ public class WatchWorkout: NSObject, ObservableObject {
 	
 	public init(configuration config: HKWorkoutConfiguration?) {
 		configuration = config ?? .defaultConfiguration
-		wasRestored = config != nil
 		super.init()
 	}
 	
 	init(session restoredSession: HKWorkoutSession) {
 		configuration = restoredSession.workoutConfiguration
+		wasRestored = true
 		super.init()
 		
 		session = restoredSession
