@@ -11,7 +11,11 @@ import Suite
 public class WatchWorkoutManager: ObservableObject {
 	public static let instance = WatchWorkoutManager()
 
-	@Published public var currentWorkout: WatchWorkout?
+	@Published public var currentWorkout: WatchWorkout? { didSet {
+		if loggingEnabled {
+			print("### Watch Workout set to \(currentWorkout?.description ?? "none")")
+		}
+	}}
 	public var store = HKHealthStore()
 	public var loggingEnabled = false
 

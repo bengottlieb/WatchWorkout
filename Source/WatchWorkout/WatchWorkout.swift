@@ -12,6 +12,8 @@ public class WatchWorkout: NSObject, ObservableObject {
 	@Published public internal(set) var phase = Phase.idle { didSet {
 		if WatchWorkoutManager.instance.loggingEnabled { logg("Current WatchWorkout Phase: \(phase)") }
 	}}
+	
+	let id = UUID()
 	@Published public var startedAt: Date?
 	@Published public var endedAt: Date?
 	@Published public var errors: [Error] = []
@@ -34,6 +36,11 @@ public class WatchWorkout: NSObject, ObservableObject {
 
 	var configuration: HKWorkoutConfiguration
 	
+	deinit {
+		if phase.isRunning, !phase.hasEnded {
+			print("### WARNING: deallocating an active workout: \(self)")
+		}
+	}
 	public init(activity: HKWorkoutActivityType, location: HKWorkoutSessionLocationType = .outdoor) {
 		configuration = HKWorkoutConfiguration(activity: activity, location: location)
 		super.init()

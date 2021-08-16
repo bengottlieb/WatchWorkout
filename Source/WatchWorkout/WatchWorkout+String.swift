@@ -10,7 +10,7 @@ import Suite
 
 extension WatchWorkout {
 	public override var description: String {
-		var string = "Workout [\(phase)]"
+		var string = "Workout \(id) [\(phase)]"
 		
 		if wasRestored { string += " restored" }
 		
