@@ -18,6 +18,10 @@ public class HeartRateMonitor: ObservableObject {
 	public static let heartRateType = HKQuantityType.quantityType(forIdentifier: .heartRate)!
 	public static let heartRateUnit = HKUnit.count().unitDivided(by: HKUnit.minute())
 	
+	public static var hasHeartRateAccess: Bool {
+		HKHealthStore().authorizationStatus(for: heartRateType) == .sharingAuthorized
+	}
+	
 	public func history(overLast interval: TimeInterval) -> Double? {
 		guard history.isNotEmpty else { return nil }
 		

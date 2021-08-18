@@ -82,6 +82,9 @@ public class WatchWorkout: NSObject, ObservableObject {
 	}
 	
 	public func start(at date: Date = Date(), completion: @escaping ErrorCallback) {
+		if !HeartRateMonitor.hasHeartRateAccess {
+			print("### Starting a workout, don't have HealthKit Heart Rate access.")
+		}
 		enqueue {
 			if self.phase.hasEnded {
 				completion(WorkoutError.workoutAlreadyEnded)
@@ -102,7 +105,10 @@ public class WatchWorkout: NSObject, ObservableObject {
 
 			do {
 				self.phase = .loading
-				if self.session == nil { self.session = try HKWorkoutSession(healthStore: self.healthStore, configuration: self.configuration) }
+				if self.session == nil {
+					WatchWorkoutManager.instance.clearEndingSessions()
+					self.session = try HKWorkoutSession(healthStore: self.healthStore, configuration: self.configuration)
+				}
 				guard let session = self.session else {
 					completion(WorkoutError.failedToCreateSession)
 					self.phase = .failed(WorkoutError.failedToCreateSession)
@@ -156,7 +162,7 @@ public class WatchWorkout: NSObject, ObservableObject {
 		}
 	}
 	
-	public func end(at date: Date = Date(), completion: ErrorCallback? = nil) {
+	public func end(at date: Date = Date(), gracePeriod: TimeInterval = 3, completion: ErrorCallback? = nil) {
 		enqueue {
 //			print("------------- Active -------------")
 //			print(self.activeEnergy)
@@ -187,7 +193,7 @@ public class WatchWorkout: NSObject, ObservableObject {
 			self.phase = .ending
 			self.endedAt = date
 			session.stopActivity(with: date)
-			session.end()
+			WatchWorkoutManager.instance.end(session, after: gracePeriod)
 			self.handlePending()
 			completion?(nil)
 		}

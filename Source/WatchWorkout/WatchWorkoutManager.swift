@@ -22,6 +22,22 @@ public class WatchWorkoutManager: ObservableObject {
 	public static let activeCalorieType = HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned)!
 	public static let basalCalorieType = HKQuantityType.quantityType(forIdentifier: .basalEnergyBurned)!
 	public static let calorieUnit = HKUnit.kilocalorie()
+	private var endingSession: HKWorkoutSession?
+
+	func end(_ session: HKWorkoutSession, after: TimeInterval) {
+		endingSession?.end()
+		
+		endingSession = session
+		DispatchQueue.main.async(after: after) {
+			self.endingSession?.end()
+			self.endingSession = nil
+		}
+	}
+	
+	func clearEndingSessions() {
+		endingSession?.end()
+		endingSession = nil
+	}
 
 	public func recoverActiveWorkout(completion: ((Result<WatchWorkout, Error>) -> Void)? = nil) {
 		store.recoverActiveWorkoutSession { session, error in
