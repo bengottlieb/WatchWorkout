@@ -29,8 +29,18 @@ public class WatchWorkout: NSObject, ObservableObject {
 	let healthStore = HKHealthStore()
 	var builder: HKLiveWorkoutBuilder?
 	var session: HKWorkoutSession?
-	var pending: [() -> Void] = []
+	var pending: [Pending] = []
 	var isProcessing = false
+	
+	struct Pending {
+		let block: (() -> Void)?
+		let label: String
+		
+		init(_ label: String, _ block: (() -> Void)?) {
+			self.label = label
+			self.block = block
+		}
+	}
 	
 	var didFinishDeletingCompletion: ErrorCallback?
 
@@ -67,25 +77,33 @@ public class WatchWorkout: NSObject, ObservableObject {
 		start(at: session?.startDate ?? Date(), completion: completion)
 	}
 	
-	func enqueue(_ block: @escaping () -> Void) {
-		pending.append(block)
-		if !isProcessing { handlePending() }
+	func enqueue(_ label: String, _ block: @escaping () -> Void) {
+		DispatchQueue.main.async {
+			self.pending.append(Pending(label, block))
+			WatchWorkoutManager.instance.holdOnTo(self)
+			if !self.isProcessing { self.handlePending() }
+		}
 	}
 	
 	func handlePending() {
-		isProcessing = false
-		guard let next = pending.first else { return }
-		
-		pending.removeFirst()
-		isProcessing = true
-		next()
+		DispatchQueue.main.async {
+			self.isProcessing = false
+			guard let next = self.pending.first else {
+				WatchWorkoutManager.instance.finished(with: self)
+				return
+			}
+			
+			self.pending.removeFirst()
+			self.isProcessing = true
+			next.block?()
+		}
 	}
 	
 	public func start(at date: Date = Date(), completion: @escaping ErrorCallback) {
 		if !HeartRateMonitor.hasHeartRateAccess {
 			print("### Starting a workout, don't have HealthKit Heart Rate access.")
 		}
-		enqueue {
+		enqueue("start") {
 			if self.phase.hasEnded {
 				completion(WorkoutError.workoutAlreadyEnded)
 				return
@@ -163,13 +181,13 @@ public class WatchWorkout: NSObject, ObservableObject {
 	}
 	
 	public func end(at date: Date = Date(), gracePeriod: TimeInterval = 3, completion: ErrorCallback? = nil) {
-		enqueue {
+		print("Starting to finish the workout")
+		enqueue("end") {
 //			print("------------- Active -------------")
 //			print(self.activeEnergy)
 //			print("------------- Basal -------------")
 //			print(self.basalEnergy)
 			guard self.phase != .ended, self.phase != .ending, self.session?.state != .ended else {
-				print("Already ended")
 				self.handlePending()
 				completion?(nil)
 				return
@@ -200,7 +218,7 @@ public class WatchWorkout: NSObject, ObservableObject {
 	}
 
 	public func delete(completion: @escaping ErrorCallback) {
-		enqueue {
+		enqueue("delete") {
 			if self.isDeleted {
 				completion(nil)
 				self.handlePending()

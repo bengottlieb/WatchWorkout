@@ -26,6 +26,10 @@ extension WatchWorkout {
 			string += " state: \(state)"
 		}
 		
+		if !pending.isEmpty {
+			string += ", \(pending.map({ $0.label }).joined(separator: ", ")) pending"
+		}
+		
 		return string
 	}
 }

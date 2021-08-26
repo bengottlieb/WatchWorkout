@@ -51,7 +51,7 @@ public extension WatchWorkout {
 	}
 	
 	func add(samples: [HKSample], completion: ErrorCallback? = nil) {
-		enqueue {
+		enqueue("add samples") {
 			if WatchWorkoutManager.instance.loggingEnabled { logg("Adding samples, Current phase: \(self.phase)") }
 			guard self.hasStarted else {
 				completion?(WorkoutError.notRunning)

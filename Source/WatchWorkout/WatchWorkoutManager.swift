@@ -23,6 +23,24 @@ public class WatchWorkoutManager: ObservableObject {
 	public static let basalCalorieType = HKQuantityType.quantityType(forIdentifier: .basalEnergyBurned)!
 	public static let calorieUnit = HKUnit.kilocalorie()
 	private var endingSession: HKWorkoutSession?
+	private var inProgressWorkouts: [WatchWorkout] = []
+	private let inProgressQueue = DispatchQueue(label: "inProgressWatchWorkouts")
+
+	internal func holdOnTo(_ workout: WatchWorkout) {
+		inProgressQueue.async {
+			if self.inProgressWorkouts.firstIndex(of: workout) == nil {
+				self.inProgressWorkouts.append(workout)
+			}
+		}
+	}
+
+	internal func finished(with workout: WatchWorkout) {
+		inProgressQueue.async {
+			while let index = self.inProgressWorkouts.firstIndex(of: workout) {
+				self.inProgressWorkouts.remove(at: index)
+			}
+		}
+	}
 
 	func end(_ session: HKWorkoutSession, after: TimeInterval) {
 		endingSession?.end()

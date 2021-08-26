@@ -10,7 +10,7 @@ import Suite
 #if os(watchOS)
 extension WatchWorkout {
 	func completeWorkout(at date: Date) {
-		enqueue {
+		enqueue("complete") {
 			guard let builder = self.builder, self.phase == .ending else {
 				self.cleanup()
 				self.handlePending()
