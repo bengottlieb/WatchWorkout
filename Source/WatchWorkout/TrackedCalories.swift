@@ -7,6 +7,7 @@
 import Foundation
 import HealthKit
 
+#if os(watchOS)
 @available(iOS 13.0, watchOS 7.0, *)
 public class TrackedCalories: CustomStringConvertible {
 	let queue = DispatchQueue(label: "TrackedCalories", qos: .utility)
@@ -55,3 +56,4 @@ public class TrackedCalories: CustomStringConvertible {
 		return results
 	}
 }
+#endif
