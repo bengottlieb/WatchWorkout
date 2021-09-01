@@ -8,6 +8,7 @@ import HealthKit
 import Suite
 
 #if os(watchOS)
+@available(iOS 13.0, watchOS 7.0, *)
 public extension WatchWorkout {
 	func addSleep(_ kind: HKCategoryValueSleepAnalysis, over range: DateInterval? = nil, metadata: [String: Any]? = nil, completion: ErrorCallback? = nil) {
 		

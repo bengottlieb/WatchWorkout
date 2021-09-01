@@ -8,6 +8,7 @@ import HealthKit
 import Suite
 
 #if os(watchOS)
+@available(iOS 13.0, watchOS 7.0, *)
 extension WatchWorkout {
 	func completeWorkout(at date: Date) {
 		enqueue("complete") {

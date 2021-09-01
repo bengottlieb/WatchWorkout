@@ -8,6 +8,7 @@ import Suite
 import HealthKit
 
 #if os(watchOS)
+@available(iOS 13.0, watchOS 7.0, *)
 public class WatchWorkout: NSObject, ObservableObject {
 	@Published public internal(set) var phase = Phase.idle { didSet {
 		if WatchWorkoutManager.instance.loggingEnabled { logg("Current WatchWorkout Phase: \(phase)") }
@@ -51,6 +52,8 @@ public class WatchWorkout: NSObject, ObservableObject {
 			print("### WARNING: deallocating an active workout: \(self)")
 		}
 	}
+
+	public override var description: String { asText }
 	public init(activity: HKWorkoutActivityType, location: HKWorkoutSessionLocationType = .outdoor) {
 		configuration = HKWorkoutConfiguration(activity: activity, location: location)
 		super.init()
@@ -245,6 +248,7 @@ public class WatchWorkout: NSObject, ObservableObject {
 	}
 }
 
+@available(iOS 13.0, watchOS 7.0, *)
 public extension WatchWorkout {
 	static var sample = WatchWorkout(activity: .rugby)
 }

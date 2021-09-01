@@ -8,6 +8,7 @@ import HealthKit
 import Suite
 
 #if os(watchOS)
+@available(iOS 13.0, watchOS 7.0, *)
 extension WatchWorkout: HKLiveWorkoutBuilderDelegate {
 	public func workoutBuilder(_ workoutBuilder: HKLiveWorkoutBuilder, didCollectDataOf collectedTypes: Set<HKSampleType>) {
 		if let heartRateStats = workoutBuilder.statistics(for: HeartRateMonitor.heartRateType) {
@@ -27,6 +28,7 @@ extension WatchWorkout: HKLiveWorkoutBuilderDelegate {
 	
 }
 
+@available(iOS 13.0, watchOS 7.0, *)
 extension WatchWorkout: HKWorkoutSessionDelegate {
 	public func workoutSession(_ workoutSession: HKWorkoutSession, didChangeTo toState: HKWorkoutSessionState, from fromState: HKWorkoutSessionState, date: Date) {
 		logg("Workout transitioned from \(fromState) to \(toState)")

@@ -8,8 +8,10 @@
 import HealthKit
 import Suite
 
+#if os(watchOS)
+@available(iOS 13.0, watchOS 7.0, *)
 extension WatchWorkout {
-	public override var description: String {
+	public var asText: String {
 		var string = "Workout \(id) [\(phase)]"
 		
 		if wasRestored { string += " restored" }
@@ -33,3 +35,4 @@ extension WatchWorkout {
 		return string
 	}
 }
+#endif

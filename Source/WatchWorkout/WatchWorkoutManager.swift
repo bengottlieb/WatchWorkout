@@ -8,6 +8,7 @@ import HealthKit
 import Suite
 
 #if os(watchOS)
+@available(iOS 13.0, watchOS 7.0, *)
 public class WatchWorkoutManager: ObservableObject {
 	public static let instance = WatchWorkoutManager()
 

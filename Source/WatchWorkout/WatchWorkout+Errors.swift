@@ -7,6 +7,7 @@
 import Foundation
 
 #if os(watchOS)
+@available(iOS 13.0, watchOS 7.0, *)
 extension WatchWorkout {
 	public enum WorkoutError: String, LocalizedError {
 		case otherWorkoutInProgress

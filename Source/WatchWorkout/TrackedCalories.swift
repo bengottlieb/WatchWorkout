@@ -7,6 +7,7 @@
 import Foundation
 import HealthKit
 
+@available(iOS 13.0, watchOS 7.0, *)
 public class TrackedCalories: CustomStringConvertible {
 	let queue = DispatchQueue(label: "TrackedCalories", qos: .utility)
 	var recorded: [RecordedCalories] = []
