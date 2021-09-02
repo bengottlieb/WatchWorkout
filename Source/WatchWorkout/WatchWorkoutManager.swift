@@ -12,13 +12,10 @@ import Suite
 public class WatchWorkoutManager: ObservableObject {
 	public static let instance = WatchWorkoutManager()
 
-	@Published public var currentWorkout: WatchWorkout? { didSet {
-		if loggingEnabled {
-			print("### Watch Workout set to \(currentWorkout?.description ?? "none")")
-		}
-	}}
+	@Published public private(set) var currentWorkout: WatchWorkout?
 	public var store = HKHealthStore()
 	public var loggingEnabled = false
+	public var trackHeartRate = true
 
 	public static let activeCalorieType = HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned)!
 	public static let basalCalorieType = HKQuantityType.quantityType(forIdentifier: .basalEnergyBurned)!
@@ -40,6 +37,13 @@ public class WatchWorkoutManager: ObservableObject {
 			while let index = self.inProgressWorkouts.firstIndex(of: workout) {
 				self.inProgressWorkouts.remove(at: index)
 			}
+		}
+	}
+
+	public func load(workout: WatchWorkout) {
+		currentWorkout = workout
+		if loggingEnabled {
+			print("### Watch Workout set to \(workout.description)")
 		}
 	}
 
