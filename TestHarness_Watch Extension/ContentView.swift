@@ -41,7 +41,7 @@ struct ContentView: View {
 	
 	var createWorkoutButton: some View {
 		Button("Create Workout") {
-			manager.currentWorkout = WatchWorkout(activity: .cricket)
+			manager.load(workout: WatchWorkout(activity: .cricket))
 		}
 	}
 }

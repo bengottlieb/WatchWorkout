@@ -20,6 +20,7 @@ extension WatchWorkout {
 					self.handlePending()
 				} else {
 					self.run(at: date, completion: completion)
+					self.handlePending()
 				}
 			}
 		}
