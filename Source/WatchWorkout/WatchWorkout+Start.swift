@@ -13,7 +13,7 @@ import HealthKit
 extension WatchWorkout {
 	public func start(at date: Date = Date(), completion: @escaping ErrorCallback) {
 		enqueue("permissionCheck") {
-			self.healthStore.requestAuthorization(toShare: nil, read: [HeartRateMonitor.heartRateType]) { success, error in
+			self.healthStore.requestAuthorization(toShare: [HKQuantityType.workoutType], read: [HKQuantityType.heartRateType, HKQuantityType.workoutType]) { success, error in
 				if !success {
 					print("### Failed to authorize health kit")
 					completion(error)

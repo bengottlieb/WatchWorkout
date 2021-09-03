@@ -17,9 +17,6 @@ public class WatchWorkoutManager: ObservableObject {
 	public var loggingEnabled = false
 	public var trackHeartRate = true
 
-	public static let activeCalorieType = HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned)!
-	public static let basalCalorieType = HKQuantityType.quantityType(forIdentifier: .basalEnergyBurned)!
-	public static let calorieUnit = HKUnit.kilocalorie()
 	private var endingSession: HKWorkoutSession?
 	private var inProgressWorkouts: [WatchWorkout] = []
 	private let inProgressQueue = DispatchQueue(label: "inProgressWatchWorkouts")

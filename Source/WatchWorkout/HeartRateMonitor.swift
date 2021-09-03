@@ -15,9 +15,6 @@ public class HeartRateMonitor: ObservableObject {
 	public var currentHeartRate = CurrentValueSubject<Int?, Never>(nil)
 	public var history: [TimeStampedHeartRate] = []
 	
-	public static let heartRateType = HKQuantityType.quantityType(forIdentifier: .heartRate)!
-	public static let heartRateUnit = HKUnit.count().unitDivided(by: HKUnit.minute())
-	
 	public func history(overLast interval: TimeInterval) -> Double? {
 		guard history.isNotEmpty else { return nil }
 		

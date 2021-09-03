@@ -25,9 +25,9 @@ public class TrackedCalories: CustomStringConvertible {
 	}
 
 	func track(statistics: HKStatistics) {
-		let unit = WatchWorkoutManager.calorieUnit
+		let unit = HKUnit.calorieUnit
 		if let sum = statistics.sumQuantity()?.doubleValue(for: unit) { total = sum }
-		guard let interval = statistics.mostRecentQuantityDateInterval(), let quantity = statistics.mostRecentQuantity()?.doubleValue(for: WatchWorkoutManager.calorieUnit) else { return }
+		guard let interval = statistics.mostRecentQuantityDateInterval(), let quantity = statistics.mostRecentQuantity()?.doubleValue(for: HKUnit.calorieUnit) else { return }
 		
 		queue.async {
 			if self.recorded.contains(where: { $0.interval == interval }) { return }
