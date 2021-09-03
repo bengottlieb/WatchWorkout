@@ -33,7 +33,6 @@ public class HeartRateMonitor: ObservableObject {
 	
 	func set(heartRate rate: Double) {
 		let roundedValue = round(rate)
-print("Setting heart rate to \(rate)")
 		DispatchQueue.main.async {
 			self.objectWillChange.send()
 			self.history.append(TimeStampedHeartRate(rate: rate))
