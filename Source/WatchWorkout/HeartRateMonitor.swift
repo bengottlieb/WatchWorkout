@@ -14,7 +14,8 @@ public class HeartRateMonitor: ObservableObject {
 	
 	public var currentHeartRate = CurrentValueSubject<Int?, Never>(nil)
 	public var history: [TimeStampedHeartRate] = []
-	
+	@Published public internal(set) var hasHeartRateAccess = false
+
 	public func history(overLast interval: TimeInterval) -> Double? {
 		guard history.isNotEmpty else { return nil }
 		

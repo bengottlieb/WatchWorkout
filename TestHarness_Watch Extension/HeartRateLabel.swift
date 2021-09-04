@@ -15,13 +15,31 @@ struct HeartRateLabel: View {
 		return "--"
 	}
 	var body: some View {
-		Text(rateText + " ❤️")
-			
+		HStack() {
+			Text(rateText)
+			HeartRateAccessLabel()
+		}
 	}
 }
 
 struct HeartRateLabel_Previews: PreviewProvider {
 	static var previews: some View {
 		HeartRateLabel()
+	}
+}
+
+struct HeartRateAccessLabel: View {
+	@ObservedObject var monitor = HeartRateMonitor.instance
+	
+	var body: some View {
+		HStack() {
+			ZStack() {
+				Text("❤️")
+					.opacity(monitor.hasHeartRateAccess ? 1 : 0.5)
+				if !monitor.hasHeartRateAccess {
+					Text(" ⃠")
+				}
+			}
+		}
 	}
 }

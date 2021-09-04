@@ -13,6 +13,8 @@ public class WatchWorkoutManager: ObservableObject {
 	public static let instance = WatchWorkoutManager()
 
 	@Published public private(set) var currentWorkout: WatchWorkout?
+	public internal(set) var hasHealthKitReadAccess = false
+	public internal(set) var hasHealthKitWriteAccess = false
 	public var store = HKHealthStore()
 	public var loggingEnabled = false
 	public var trackHeartRate = true
@@ -20,6 +22,14 @@ public class WatchWorkoutManager: ObservableObject {
 	private var endingSession: HKWorkoutSession?
 	private var inProgressWorkouts: [WatchWorkout] = []
 	private let inProgressQueue = DispatchQueue(label: "inProgressWatchWorkouts")
+	
+	public var typesToRead: Set = [HKQuantityType.heartRateType, HKQuantityType.workoutType]
+	public var typesToWrite: Set = [HKQuantityType.workoutType, HKQuantityType.activeCalorieType, HKQuantityType.basalCalorieType]
+
+	init() {
+		checkForHealtkitAccess()
+		checkForHeartRateAccess()
+	}
 
 	internal func holdOnTo(_ workout: WatchWorkout) {
 		inProgressQueue.async {
