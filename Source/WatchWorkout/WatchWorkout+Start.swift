@@ -68,7 +68,9 @@ extension WatchWorkout {
 
 				self.builder?.dataSource = HKLiveWorkoutDataSource(healthStore: self.healthStore, workoutConfiguration: self.configuration)
 				self.builder?.delegate = self
+				if WatchWorkoutManager.instance.loggingEnabled { logg("builder: beginCollection: \(String(describing: self.builder))") }
 				self.builder?.beginCollection(withStart: date) { started, error in
+					if WatchWorkoutManager.instance.loggingEnabled { logg("builder: completed beginCollection") }
 					if let err = error, WatchWorkoutManager.instance.loggingEnabled { print("### Error when beginning collection: \(err), \(err.localizedDescription)") }
 					DispatchQueue.main.async {
 						if WatchWorkoutManager.instance.loggingEnabled { logg("Started workout, curent state: \(session.state)") }
