@@ -24,7 +24,7 @@ public class WatchWorkoutManager: ObservableObject {
 	private let inProgressQueue = DispatchQueue(label: "inProgressWatchWorkouts")
 	
 	public var typesToRead: Set = [HKQuantityType.heartRateType, HKQuantityType.workoutType]
-	public var typesToWrite: Set = [HKQuantityType.workoutType, HKQuantityType.activeCalorieType, HKQuantityType.basalCalorieType]
+	public var typesToWrite: Set = [HKQuantityType.workoutType]
 
 	init() {
 		checkForHealtkitAccess()
