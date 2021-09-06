@@ -49,12 +49,19 @@ public class WatchWorkoutManager: ObservableObject {
 
 	public func load(workout: WatchWorkout) {
 		currentWorkout = workout
-		if loggingEnabled {
-			print("### Watch Workout set to \(workout.description)")
-		}
+		if loggingEnabled { print("### Watch Workout set to \(workout.description)") }
+	}
+
+	public func clearCurrent() {
+		if loggingEnabled { print("### Clearing current workout") }
+		if currentWorkout == nil { return }
+		currentWorkout?.end()
+		currentWorkout = nil
 	}
 
 	func end(_ session: HKWorkoutSession, after: TimeInterval) {
+		if loggingEnabled { print("### Ending current workout session") }
+
 		endingSession?.end()
 		
 		endingSession = session

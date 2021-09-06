@@ -20,6 +20,7 @@ public class WatchWorkout: NSObject, ObservableObject {
 	@Published public var errors: [Error] = []
 	public internal(set) var isDeleted = false
 	public var hasStarted: Bool { startedAt != nil }
+	public var identifier: String?
 	
 	public var workout: HKWorkout?
 	public let basalEnergy = TrackedCalories()
@@ -154,7 +155,7 @@ public class WatchWorkout: NSObject, ObservableObject {
 			}
 
 			guard self.phase.isRunning else {
-				completion(WorkoutError.notRunning)
+				self.deleteFromHealthKit(completion: completion)
 				self.handlePending()
 				return
 			}
