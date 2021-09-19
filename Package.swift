@@ -15,7 +15,7 @@ let package = Package(
 				targets: ["WatchWorkout"]),
 	 ],
 	dependencies: [
-	  .package(url: "https://github.com/bengottlieb/Suite.git", from: "0.10.85"),
+	  .package(url: "https://github.com/bengottlieb/Suite.git", from: "1.0.0"),
 
 	],
 	 targets: [
