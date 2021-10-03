@@ -18,6 +18,7 @@ public class WatchWorkoutManager: ObservableObject {
 	public var store = HKHealthStore()
 	public var loggingEnabled = false
 	public var trackHeartRate = true
+	public var useBuilder = true
 
 	private var endingSession: HKWorkoutSession?
 	private var inProgressWorkouts: [WatchWorkout] = []

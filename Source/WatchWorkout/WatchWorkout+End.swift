@@ -12,8 +12,17 @@ import Suite
 extension WatchWorkout {
 	func completeWorkout(at date: Date) {
 		enqueue("complete") {
-			guard let builder = self.builder, self.phase == .ending else {
-				print("No builder, or incorrect phase (\(self.phase))")
+			guard self.phase == .ending else {
+				print("Incorrect phase (\(self.phase))")
+				self.cleanup()
+				self.handlePending()
+				return
+			}
+			
+			guard let builder = self.builder else {
+				if WatchWorkoutManager.instance.useBuilder {
+					print("No builder, or incorrect phase (\(self.phase))")
+				}
 				self.cleanup()
 				self.handlePending()
 				return
@@ -43,6 +52,7 @@ extension WatchWorkout {
 	
 	func cleanup() {
 		print("Cleaning up")
+		stopHealthKitQuery()
 		phase = .idle
 		if isDeleted {
 			self.deleteFromHealthKit(completion: didFinishDeletingCompletion)

@@ -29,11 +29,13 @@ public class WatchWorkout: NSObject, ObservableObject {
 	public private(set) var wasRestored = false
 
 
+	var heartRateQuery: HKQuery?
 	let healthStore = HKHealthStore()
 	var builder: HKLiveWorkoutBuilder?
 	var session: HKWorkoutSession?
 	var pending: [Pending] = []
 	var isProcessing = false
+	var processingLabel = ""
 	
 	struct Pending {
 		let block: (() -> Void)?
@@ -84,7 +86,7 @@ public class WatchWorkout: NSObject, ObservableObject {
 	
 	func enqueue(_ label: String, _ block: @escaping () -> Void) {
 		DispatchQueue.main.async {
-			print("queuing \(label), processing: \(self.isProcessing)")
+			print("queuing \(label), processing: \(self.processingLabel)")
 			self.pending.append(Pending(label, block))
 			WatchWorkoutManager.instance.holdOnTo(self)
 			if !self.isProcessing { self.handlePending() }
@@ -99,6 +101,7 @@ public class WatchWorkout: NSObject, ObservableObject {
 				return
 			}
 			logg("Handling \(next.label)")
+			self.processingLabel = next.label
 			self.pending.removeFirst()
 			self.isProcessing = true
 			next.block?()

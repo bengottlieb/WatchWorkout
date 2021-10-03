@@ -55,53 +55,66 @@ extension WatchWorkout {
 					self.handlePending()
 					return
 				}
-				self.builder = session.associatedWorkoutBuilder()
-				if self.builder == nil {
-					completion(WorkoutError.failedToCreateBuilder)
-					self.phase = .failed(WorkoutError.failedToCreateBuilder)
-					self.handlePending()
-					return
-				}
+				
 				session.delegate = self
-
-				self.builder?.dataSource = HKLiveWorkoutDataSource(healthStore: self.healthStore, workoutConfiguration: self.configuration)
-				self.builder?.delegate = self
-				if WatchWorkoutManager.instance.loggingEnabled { logg("builder: beginCollection: \(String(describing: self.builder))") }
-				self.builder?.beginCollection(withStart: date) { started, error in
-					if WatchWorkoutManager.instance.loggingEnabled { logg("builder: completed beginCollection") }
-					if let err = error, WatchWorkoutManager.instance.loggingEnabled { print("### Error when beginning collection: \(err), \(err.localizedDescription)") }
-					DispatchQueue.main.async {
-						if WatchWorkoutManager.instance.loggingEnabled { logg("Started workout, curent state: \(session.state)") }
-						switch session.state {
-						case .stopped, .ended:
-							self.phase = .failed(error ?? WorkoutError.sessionFailedToStart)
-							completion(error ?? WorkoutError.sessionFailedToStart)
-							
-						case .running:
-							self.phase = .active
-							completion(nil)
-
-						case .notStarted, .prepared:
-							self.phase = .active
-							session.startActivity(with: date)
-							completion(nil)
-
-						case .paused:
-							self.phase = .active
-							session.resume()
-							completion(nil)
-
-						default:
-							self.phase = .failed(error ?? WorkoutError.sessionFailedToStart)
-							completion(error ?? WorkoutError.sessionFailedToStart)
-						}
+				if WatchWorkoutManager.instance.useBuilder {
+					self.builder = session.associatedWorkoutBuilder()
+					if self.builder == nil {
+						completion(WorkoutError.failedToCreateBuilder)
+						self.phase = .failed(WorkoutError.failedToCreateBuilder)
 						self.handlePending()
+						return
 					}
+					self.builder?.dataSource = HKLiveWorkoutDataSource(healthStore: self.healthStore, workoutConfiguration: self.configuration)
+					self.builder?.delegate = self
+					if WatchWorkoutManager.instance.loggingEnabled { logg("builder: beginCollection: \(String(describing: self.builder))") }
+					self.builder?.beginCollection(withStart: date) { started, error in
+						if WatchWorkoutManager.instance.loggingEnabled { logg("builder: completed beginCollection") }
+						if let err = error, WatchWorkoutManager.instance.loggingEnabled { print("### Error when beginning collection: \(err), \(err.localizedDescription)") }
+						self.finishStartup(with: error, completion: completion)
+					}
+				} else {
+					session.prepare()
+					self.startHeartRateQuery()
+					self.finishStartup(with: nil, completion: completion)
 				}
 			} catch {
 				completion(error)
 				self.handlePending()
 			}
+		}
+	}
+	
+	func finishStartup(with error: Error?, completion: @escaping ErrorCallback) {
+		DispatchQueue.main.async {
+			if let session = self.session {
+				if WatchWorkoutManager.instance.loggingEnabled { logg("Started workout, curent state: \(session.state)") }
+
+				switch session.state {
+				case .stopped, .ended:
+					self.phase = .failed(error ?? WorkoutError.sessionFailedToStart)
+					completion(error ?? WorkoutError.sessionFailedToStart)
+					
+				case .running:
+					self.phase = .active
+					completion(nil)
+
+				case .notStarted, .prepared:
+					self.phase = .active
+					session.startActivity(with: self.startedAt ?? Date())
+					completion(nil)
+
+				case .paused:
+					self.phase = .active
+					self.session?.resume()
+					completion(nil)
+
+				default:
+					self.phase = .failed(error ?? WorkoutError.sessionFailedToStart)
+					completion(error ?? WorkoutError.sessionFailedToStart)
+				}
+			}
+			self.handlePending()
 		}
 	}
 }
