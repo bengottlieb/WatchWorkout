@@ -33,7 +33,7 @@ extension WatchWorkoutManager {
 			fatalError()
 		}
 
-		self.store.requestAuthorization(toShare: typesToWrite, read: typesToRead) { success, error in
+		self.store.requestAuthorization(toShare: typesToShare, read: typesToRead) { success, error in
 			if !success {
 				print("### Failed to authorize health kit")
 				completion(error)

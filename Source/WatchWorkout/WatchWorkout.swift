@@ -22,7 +22,8 @@ public class WatchWorkout: NSObject, ObservableObject {
 	public var hasStarted: Bool { startedAt != nil }
 	public var identifier: String?
 	
-	public var workout: HKWorkout?
+	public var workout: HKWorkout? { didSet { workoutID = workout?.uuid }}
+	public var workoutID: UUID?
 	public let basalEnergy = TrackedCalories()
 	public let activeEnergy = TrackedCalories()
 	public private(set) var wasRestored = false
@@ -83,6 +84,7 @@ public class WatchWorkout: NSObject, ObservableObject {
 	
 	func enqueue(_ label: String, _ block: @escaping () -> Void) {
 		DispatchQueue.main.async {
+			print("queuing \(label), processing: \(self.isProcessing)")
 			self.pending.append(Pending(label, block))
 			WatchWorkoutManager.instance.holdOnTo(self)
 			if !self.isProcessing { self.handlePending() }
@@ -96,7 +98,7 @@ public class WatchWorkout: NSObject, ObservableObject {
 				WatchWorkoutManager.instance.finished(with: self)
 				return
 			}
-			
+			logg("Handling \(next.label)")
 			self.pending.removeFirst()
 			self.isProcessing = true
 			next.block?()
@@ -149,12 +151,14 @@ public class WatchWorkout: NSObject, ObservableObject {
 			}
 			
 			if self.phase == .ended {
+				print("already ended, calling delete now")
 				self.deleteFromHealthKit(completion: completion)
 				self.handlePending()
 				return
 			}
 
 			guard self.phase.isRunning else {
+				print("Not running, calling delete now")
 				self.deleteFromHealthKit(completion: completion)
 				self.handlePending()
 				return

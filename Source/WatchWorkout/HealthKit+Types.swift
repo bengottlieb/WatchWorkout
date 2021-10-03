@@ -13,6 +13,8 @@ public extension HKQuantityType {
 	static let heartRateType = HKQuantityType.quantityType(forIdentifier: .heartRate)!
 	static let activeCalorieType = HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned)!
 	static let basalCalorieType = HKQuantityType.quantityType(forIdentifier: .basalEnergyBurned)!
+	static let appleExerciseTime = HKQuantityType.quantityType(forIdentifier: .appleExerciseTime)!
+	static let appleStandTime = HKQuantityType.quantityType(forIdentifier: .appleStandTime)!
 
 	static let workoutType = HKObjectType.workoutType()
 }
