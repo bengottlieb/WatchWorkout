@@ -58,7 +58,7 @@ public class WatchWorkout: NSObject, ObservableObject {
 	}
 
 	public override var description: String { asText }
-	public init(activity: HKWorkoutActivityType, location: HKWorkoutSessionLocationType = .outdoor) {
+	public init(activity: HKWorkoutActivityType, location: HKWorkoutSessionLocationType = .indoor) {
 		configuration = HKWorkoutConfiguration(activity: activity, location: location)
 		super.init()
 	}

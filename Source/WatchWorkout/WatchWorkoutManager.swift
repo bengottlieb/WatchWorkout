@@ -19,6 +19,7 @@ public class WatchWorkoutManager: ObservableObject {
 	public var loggingEnabled = false
 	public var trackHeartRate = true
 	public var useBuilder = true
+	public var dontRecordRingProgress = false
 
 	private var endingSession: HKWorkoutSession?
 	private var inProgressWorkouts: [WatchWorkout] = []

@@ -8,7 +8,7 @@ import HealthKit
 
 #if os(watchOS)
 extension HKWorkoutConfiguration {
-	public static var defaultConfiguration = HKWorkoutConfiguration(activity: .other, location: .outdoor)
+	public static var defaultConfiguration = HKWorkoutConfiguration(activity: .other, location: .indoor)
 	
 	convenience init(activity: HKWorkoutActivityType, location: HKWorkoutSessionLocationType) {
 		self.init()
