@@ -78,7 +78,6 @@ extension WatchWorkout {
 					self.startHeartRateQuery()
 					self.finishStartup(with: nil, completion: completion)
 				}
-				if WatchWorkoutManager.instance.dontRecordRingProgress { session.pause() }
 			} catch {
 				completion(error)
 				self.handlePending()
@@ -115,6 +114,7 @@ extension WatchWorkout {
 					completion(error ?? WorkoutError.sessionFailedToStart)
 				}
 			}
+			if WatchWorkoutManager.instance.dontRecordRingProgress { self.session?.pause() }
 			self.handlePending()
 		}
 	}
