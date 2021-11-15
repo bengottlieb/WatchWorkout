@@ -11,6 +11,10 @@ import HealthKit
 #if os(watchOS)
 @available(iOS 13.0, watchOS 7.0, *)
 extension WatchWorkout {
+	public var isPaused: Bool {
+		session?.state == .paused
+	}
+
 	public func start(at date: Date = Date(), completion: @escaping ErrorCallback) {
 		enqueue("permissionCheck") {
 			WatchWorkoutManager.instance.authorizeHealthKit { error in
@@ -114,7 +118,10 @@ extension WatchWorkout {
 					completion(error ?? WorkoutError.sessionFailedToStart)
 				}
 			}
-			if WatchWorkoutManager.instance.dontRecordRingProgress { self.session?.pause() }
+			if WatchWorkoutManager.instance.dontRecordRingProgress {
+				self.session?.pause()
+				self.objectWillChange.send()
+			}
 			self.handlePending()
 		}
 	}

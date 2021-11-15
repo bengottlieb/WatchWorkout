@@ -37,6 +37,7 @@ extension WatchWorkout: HKWorkoutSessionDelegate {
 		if toState == .ended {
 			completeWorkout(at: date)
 		}
+		self.objectWillChange.sendOnMain()
 	}
 
 	public func workoutSession(_ workoutSession: HKWorkoutSession, didFailWithError error: Error) {
