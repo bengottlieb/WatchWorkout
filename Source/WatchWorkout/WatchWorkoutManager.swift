@@ -68,8 +68,7 @@ public class WatchWorkoutManager: ObservableObject {
 		
 		endingSession = session
 		DispatchQueue.main.async(after: after) {
-			self.endingSession?.end()
-			self.endingSession = nil
+			self.clearEndingSessions()
 		}
 	}
 	

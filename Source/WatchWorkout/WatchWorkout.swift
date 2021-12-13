@@ -173,6 +173,10 @@ public class WatchWorkout: NSObject, ObservableObject {
 			self.handlePending()
 		}
 	}
+	
+	public var isRunning: Bool {
+		phase == .active || phase == .loading
+	}
 }
 
 @available(iOS 13.0, watchOS 7.0, *)
