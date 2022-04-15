@@ -20,6 +20,7 @@ public class WatchWorkoutManager: ObservableObject {
 	public var trackHeartRate = true
 	public var useBuilder = true
 	public var dontRecordRingProgress = false
+    public var endingError: Error?
 
 	private var endingSession: HKWorkoutSession?
 	private var inProgressWorkouts: [WatchWorkout] = []

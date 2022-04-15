@@ -42,6 +42,8 @@ extension WatchWorkout: HKWorkoutSessionDelegate {
 
 	public func workoutSession(_ workoutSession: HKWorkoutSession, didFailWithError error: Error) {
 		logg(error: error, "Workout session failed")
+        WatchWorkoutManager.instance.endingError = error
+        WatchWorkoutManager.instance.end(workoutSession, after: 0)
 	}
 }
 #endif
