@@ -29,6 +29,10 @@ public class WatchWorkoutManager: ObservableObject {
 	public var typesToRead: Set = [HKQuantityType.heartRateType, HKQuantityType.workoutType]
 	public var typesToShare: Set<HKSampleType> = [HKQuantityType.workoutType]
 
+    public struct Notifications {
+        public static let workoutEnded = Notification.Name("WatchWorkout.workoutEnded")
+    }
+        
 	init() {
 		checkForHealtkitAccess()
 		checkForHeartRateAccess()
@@ -65,6 +69,8 @@ public class WatchWorkoutManager: ObservableObject {
 	func end(_ session: HKWorkoutSession, after: TimeInterval) {
 		if loggingEnabled { print("### Ending current workout session") }
 
+        NotificationCenter.default.post(name: Notifications.workoutEnded, object: endingSession, userInfo: nil)
+        
 		endingSession?.end()
 		
 		endingSession = session
