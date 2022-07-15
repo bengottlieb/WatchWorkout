@@ -6,7 +6,8 @@ import PackageDescription
 let package = Package(
 	 name: "WatchWorkout",
 	 platforms: [
-			  .watchOS(.v6)
+			  .watchOS(.v6),
+			  .iOS(.v15)
 		 ],
 	 products: [
 		  // Products define the executables and libraries produced by a package, and make them visible to other packages.
