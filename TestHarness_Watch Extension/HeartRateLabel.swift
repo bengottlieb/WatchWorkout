@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+#if os(watchOS)
 struct HeartRateLabel: View {
 	@ObservedObject var monitor = HeartRateMonitor.instance
 	
@@ -43,3 +44,4 @@ struct HeartRateAccessLabel: View {
 		}
 	}
 }
+#endif

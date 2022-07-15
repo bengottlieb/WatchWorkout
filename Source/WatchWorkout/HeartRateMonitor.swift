@@ -8,7 +8,6 @@ import HealthKit
 import Suite
 
 
-#if os(watchOS)
 public class HeartRateMonitor: ObservableObject {
 	public static let instance = HeartRateMonitor()
 	
@@ -48,4 +47,3 @@ extension HeartRateMonitor {
 		public var rate: Double
 	}
 }
-#endif

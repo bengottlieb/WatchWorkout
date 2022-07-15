@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+#if os(watchOS)
 @available(iOS 13.0, watchOS 7.0, *)
 public struct WorkoutIndicatorView: View {
 	@ObservedObject var workouts = WatchWorkoutManager.instance
@@ -66,3 +67,4 @@ struct WorkoutIndicatorView_Previews: PreviewProvider {
 		WorkoutIndicatorView()
 	}
 }
+#endif

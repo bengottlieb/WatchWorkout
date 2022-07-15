@@ -71,7 +71,7 @@ public class WatchWorkoutManager: ObservableObject {
 
         NotificationCenter.default.post(name: Notifications.workoutEnded, object: endingSession, userInfo: nil)
         
-		endingSession?.end()
+        if endingSession?.state != .ended { endingSession?.end() }
 		
 		endingSession = session
 		DispatchQueue.main.async(after: after) {
@@ -80,7 +80,7 @@ public class WatchWorkoutManager: ObservableObject {
 	}
 	
 	func clearEndingSessions() {
-		endingSession?.end()
+        if endingSession?.state != .ended { endingSession?.end() }
 		endingSession = nil
 	}
 
