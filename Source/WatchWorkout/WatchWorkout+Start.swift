@@ -36,8 +36,8 @@ extension WatchWorkout {
 			}
 			self.startedAt = date
 			if WatchWorkoutManager.instance.currentWorkout?.phase.isRunning == true {
-				completion(WorkoutError.otherWorkoutInProgress)
-				self.handlePending()
+				//completion(WorkoutError.otherWorkoutInProgress)
+				self.finishStartup(with: nil, completion: completion)
 				return
 			}
 			

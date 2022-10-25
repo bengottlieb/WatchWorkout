@@ -87,11 +87,12 @@ public class WatchWorkoutManager: ObservableObject {
 	public func recoverActiveWorkout(completion: ((Result<WatchWorkout, Error>) -> Void)? = nil) {
 		store.recoverActiveWorkoutSession { session, error in
 			if let session = session {
+				print("Recovering a workout: \(session)")
 				DispatchQueue.main.async {
 					let workout = WatchWorkout(session: session)
 					workout.restore { error in
 						if let err = error {
-							logg(error: error, "Failed to restore a workout from \(session).")
+							logg(error: error, "Failed to restore a workout from \(session), \(err).")
 							completion?(.failure(err))
 						} else {
 							self.currentWorkout = workout
